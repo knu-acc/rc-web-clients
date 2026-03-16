@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
+import PageSection from "@/components/material/PageSection";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -11,80 +14,57 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const emailRef = useRef<HTMLElement & { value: string }>(null);
-  const passwordRef = useRef<HTMLElement & { value: string }>(null);
-
-  useEffect(() => {
-    const el = emailRef.current;
-    if (!el) return;
-    const handler = () => setEmail(el.value);
-    el.addEventListener("input", handler);
-    return () => el.removeEventListener("input", handler);
-  }, []);
-
-  useEffect(() => {
-    const el = passwordRef.current;
-    if (!el) return;
-    const handler = () => setPassword(el.value);
-    el.addEventListener("input", handler);
-    return () => el.removeEventListener("input", handler);
-  }, []);
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
+
     const supabase = createClient();
     const { error: err } = await supabase.auth.signInWithPassword({ email, password });
+
     setLoading(false);
     if (err) {
       setError(err.message === "Invalid login credentials" ? "Неверный email или пароль" : err.message);
       return;
     }
+
     router.push("/projects");
     router.refresh();
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[var(--color-surface)]">
-      <div className="w-full max-w-sm space-y-6">
-        <div>
-          <h1 className="md-typescale-headline-medium text-[var(--color-on-surface)]">
-            Вход
-          </h1>
-          <p className="md-typescale-body-medium text-[var(--color-on-surface-variant)] mt-1">
-            Email и пароль от вашего аккаунта Supabase
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <md-outlined-text-field
-            ref={emailRef}
-            label="Email"
-            type="email"
-            value={email}
-            required
-            style={{ width: "100%" }}
-          />
-          <md-outlined-text-field
-            ref={passwordRef}
-            label="Пароль"
-            type="password"
-            value={password}
-            required
-            style={{ width: "100%" }}
-          />
-          {error && (
-            <p className="md-typescale-body-small text-[var(--color-error)]">{error}</p>
-          )}
-          <md-filled-button
-            type="submit"
-            disabled={loading || undefined}
-            style={{ width: "100%" }}
-          >
-            {loading ? "Вход…" : "Войти"}
-          </md-filled-button>
-        </form>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(103,80,164,0.16),transparent_28%),var(--color-surface)] px-4 py-10 md:px-6">
+      <div className="mx-auto max-w-xl">
+        <PageSection
+          title="Вход в CRM"
+          description="Материал 3-стиль: спокойная поверхность, чистая иерархия и только нужные поля."
+          tonal
+        >
+          <form onSubmit={handleSubmit} className="space-y-4 text-[var(--color-on-surface)]">
+            <Input
+              label="Email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+            />
+            <Input
+              label="Пароль"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+            />
+            {error ? <p className="md-typescale-body-small text-[var(--color-error)]">{error}</p> : null}
+            <div className="flex flex-wrap gap-3">
+              <Button type="submit" disabled={loading}>
+                {loading ? "Вход…" : "Войти"}
+              </Button>
+            </div>
+          </form>
+        </PageSection>
       </div>
     </div>
   );

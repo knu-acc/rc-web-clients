@@ -40,6 +40,9 @@ export default function Input({
   max,
   step,
   maxLength,
+  autoComplete,
+  inputMode,
+  name,
   autoFocus,
 }: InputProps) {
   const genId = useId();
@@ -89,6 +92,9 @@ export default function Input({
         max={max !== undefined ? String(max) : undefined}
         step={step !== undefined ? String(step) : undefined}
         max-length={maxLength !== undefined ? String(maxLength) : undefined}
+        autocomplete={autoComplete || undefined}
+        inputmode={inputMode || undefined}
+        name={name || undefined}
         style={{ width: "100%" }}
       />
     </div>

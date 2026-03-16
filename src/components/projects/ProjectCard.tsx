@@ -10,42 +10,44 @@ interface ProjectCardProps {
 
 function formatPrice(n: number): string {
   if (n === 0) return "—";
-  return new Intl.NumberFormat("ru-RU", {
-    style: "decimal",
-    maximumFractionDigits: 0,
-  }).format(n) + " ₸";
+  return `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(n)} ₸`;
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <article className="rounded-[16px] bg-[var(--color-surface-container)] border border-[var(--color-outline-variant)]/50 p-4">
-      <div className="flex justify-between items-start gap-3">
-        <h2 className="md-typescale-title-medium text-[var(--color-on-surface)] truncate flex-1">
-          {project.client_name}
-        </h2>
-        <span className="md-typescale-title-medium text-[var(--color-primary)] shrink-0">
+    <article className="rounded-[28px] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 space-y-1.5">
+          <h2 className="truncate md-typescale-title-large text-[var(--color-on-surface)]">
+            {project.client_name}
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            <StatusBadge value={project.work_status} kind="work" />
+            <StatusBadge value={project.payment_status} kind="payment" />
+          </div>
+        </div>
+        <p className="shrink-0 text-right md-typescale-title-large text-[var(--color-primary)]">
           {formatPrice(project.price)}
-        </span>
+        </p>
       </div>
-      <div className="flex flex-wrap gap-2 mt-3">
-        <StatusBadge value={project.work_status} kind="work" />
-        <StatusBadge value={project.payment_status} kind="payment" />
+
+      <div className="mt-4 grid gap-2 md:grid-cols-2">
+        <div className="rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3">
+          <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">Телефон</p>
+          <p className="md-typescale-body-large text-[var(--color-on-surface)]">{project.phone || "Не указан"}</p>
+        </div>
+        <div className="rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3">
+          <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">Telegram</p>
+          <p className="md-typescale-body-large text-[var(--color-on-surface)]">{project.telegram || "Не указан"}</p>
+        </div>
       </div>
-      <div className="mt-4 flex items-center gap-2">
+
+      <div className="mt-5 flex flex-wrap gap-3">
         <Link href={`/projects/${project.id}`}>
           <md-filled-button>Открыть</md-filled-button>
         </Link>
-        <Link
-          href={`/projects/${project.id}/edit`}
-          aria-label="Редактировать проект"
-          title="Редактировать"
-        >
-          <md-outlined-button>
-            <svg className="w-5 h-5" slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M16.5 3.5a2.121 2.121 0 113 3L12 14l-4 1 1-4 7.5-7.5z" />
-            </svg>
-            Изменить
-          </md-outlined-button>
+        <Link href={`/projects/${project.id}/edit`}>
+          <md-outlined-button>Редактировать</md-outlined-button>
         </Link>
       </div>
     </article>

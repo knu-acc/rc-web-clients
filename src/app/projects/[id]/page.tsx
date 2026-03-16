@@ -3,10 +3,16 @@ import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import TopBar from "@/components/layout/TopBar";
 import DeleteProjectButton from "./ui-delete-button";
+import StatusBadge from "@/components/projects/StatusBadge";
+import PageSection from "@/components/material/PageSection";
 
 function formatKzt(n: number): string {
   if (!n) return "—";
   return `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(n)} ₸`;
+}
+
+function detailValue(value: string | null | undefined, fallback = "—") {
+  return value && value.trim() ? value : fallback;
 }
 
 interface PageProps {
@@ -16,73 +22,84 @@ interface PageProps {
 export default async function ProjectDetailPage({ params }: PageProps) {
   const { id } = await params;
   const supabase = await createClient();
-  const { data: project, error } = await supabase
-    .from("projects")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const { data: project, error } = await supabase.from("projects").select("*").eq("id", id).single();
 
-  if (error || !project) {
-    notFound();
-  }
+  if (error || !project) notFound();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <TopBar title={project.client_name} />
-      <main className="flex-1 p-4 space-y-4">
-        <nav className="flex items-center gap-1 text-sm flex-wrap" aria-label="Breadcrumb">
-          <Link href="/projects" className="text-[var(--color-primary)] md-typescale-label-large min-h-[44px] inline-flex items-center">
-            Проекты
-          </Link>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(103,80,164,0.14),transparent_28%),var(--color-surface)] pb-10">
+      <TopBar title={project.client_name} subtitle="Карточка проекта и быстрые действия" />
+      <main className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 md:px-6 md:py-6">
+        <nav className="flex flex-wrap items-center gap-1 md-typescale-label-large" aria-label="Breadcrumb">
+          <Link href="/projects" className="text-[var(--color-primary)] min-h-[44px] inline-flex items-center">Проекты</Link>
           <span className="text-[var(--color-on-surface-variant)]">/</span>
-          <span className="text-[var(--color-on-surface-variant)] md-typescale-label-large min-h-[44px] inline-flex items-center truncate max-w-[200px]">
-            {project.client_name}
-          </span>
+          <span className="text-[var(--color-on-surface-variant)] min-h-[44px] inline-flex max-w-[240px] items-center truncate">{project.client_name}</span>
         </nav>
 
-        <section className="rounded-[16px] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container)] p-4 space-y-3">
-          <div className="flex items-start justify-between gap-3">
-            <h2 className="md-typescale-headline-small text-[var(--color-on-surface)]">{project.client_name}</h2>
-            <p className="md-typescale-headline-small text-[var(--color-primary)]">{formatKzt(Number(project.price))}</p>
-          </div>
-          <div className="grid gap-2 md-typescale-body-medium">
-            <p><span className="text-[var(--color-on-surface-variant)]">Телефон:</span> {project.phone || "—"}</p>
-            <p><span className="text-[var(--color-on-surface-variant)]">Telegram:</span> {project.telegram || "—"}</p>
-            <p><span className="text-[var(--color-on-surface-variant)]">Статус:</span> {project.work_status}</p>
-            <p><span className="text-[var(--color-on-surface-variant)]">Оплата:</span> {project.payment_status}</p>
-            <p><span className="text-[var(--color-on-surface-variant)]">Дата оплаты:</span> {project.paid_at || "—"}</p>
-            <p><span className="text-[var(--color-on-surface-variant)]">Дата создания сайта:</span> {project.site_created_at || "—"}</p>
-          </div>
-          {project.website_url && (
-            <a
-              href={project.website_url}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-[40px] items-center px-4 rounded-[20px] bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)] md-typescale-label-large"
-            >
-              Открыть сайт
-            </a>
-          )}
-          {project.contract_url && (
-            <p className="md-typescale-body-small break-all">
-              <span className="text-[var(--color-on-surface-variant)]">Договор:</span> {project.contract_url}
-            </p>
-          )}
-          {project.notes && (
-            <div>
-              <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)] mb-1">Заметки</p>
-              <p className="md-typescale-body-medium whitespace-pre-wrap">{project.notes}</p>
+        <PageSection title={project.client_name} description="Самое важное собрано вверху: сумма, статусы и связь.">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div className="space-y-3">
+              <div className="flex flex-wrap gap-2">
+                <StatusBadge value={project.work_status} kind="work" />
+                <StatusBadge value={project.payment_status} kind="payment" />
+              </div>
+              <p className="md-typescale-display-small text-[var(--color-primary)]">{formatKzt(Number(project.price))}</p>
             </div>
-          )}
-        </section>
+            <div className="flex flex-wrap gap-3">
+              <Link href={`/projects/${project.id}/edit`}>
+                <md-filled-button>Редактировать</md-filled-button>
+              </Link>
+              <DeleteProjectButton projectId={project.id} projectName={project.client_name} />
+            </div>
+          </div>
+        </PageSection>
 
-        <div className="flex gap-2">
-          <Link href={`/projects/${project.id}/edit`}>
-            <md-filled-button>Редактировать</md-filled-button>
-          </Link>
-          <DeleteProjectButton projectId={project.id} projectName={project.client_name} />
+        <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+          <PageSection title="Контакты" description="Телефон и Telegram разведены отдельно, без смешивания каналов связи.">
+            <DetailRow label="Телефон" value={detailValue(project.phone)} />
+            <DetailRow label="Telegram" value={detailValue(project.telegram)} />
+            <DetailRow label="Сайт" value={detailValue(project.website_url)} isLink={Boolean(project.website_url)} />
+          </PageSection>
+
+          <PageSection title="Статусы и даты" description="Поля, которые чаще всего обновляются в процессе работы.">
+            <DetailRow label="Статус работы" value={project.work_status} />
+            <DetailRow label="Статус оплаты" value={project.payment_status} />
+            <DetailRow label="Дата оплаты" value={detailValue(project.paid_at)} />
+            <DetailRow label="Дата создания сайта" value={detailValue(project.site_created_at)} />
+          </PageSection>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+          <PageSection title="Документы" description="Сюда можно позже вынести отдельную модель файлов, но пока всё собрано в одном месте.">
+            {project.contract_url ? (
+              <p className="break-all md-typescale-body-medium text-[var(--color-on-surface)]">{project.contract_url}</p>
+            ) : (
+              <p className="md-typescale-body-medium text-[var(--color-on-surface-variant)]">Договор не прикреплён.</p>
+            )}
+          </PageSection>
+
+          <PageSection title="Заметки" description="Свободный текст для нюансов, дедлайнов и контекста.">
+            <p className="whitespace-pre-wrap md-typescale-body-large text-[var(--color-on-surface)]">
+              {detailValue(project.notes, "Пока без заметок.")}
+            </p>
+          </PageSection>
         </div>
       </main>
+    </div>
+  );
+}
+
+function DetailRow({ label, value, isLink = false }: { label: string; value: string; isLink?: boolean }) {
+  return (
+    <div className="rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3">
+      <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">{label}</p>
+      {isLink && value !== "—" ? (
+        <a href={value} target="_blank" rel="noreferrer" className="break-all md-typescale-body-large text-[var(--color-primary)]">
+          {value}
+        </a>
+      ) : (
+        <p className="break-words md-typescale-body-large text-[var(--color-on-surface)]">{value}</p>
+      )}
     </div>
   );
 }

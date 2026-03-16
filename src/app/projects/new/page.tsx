@@ -4,19 +4,16 @@ import TopBar from "@/components/layout/TopBar";
 
 export default function NewProjectPage() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <TopBar title="Новый проект" />
-      <main className="flex-1 p-4 pt-4">
-        <nav className="mb-4 flex items-center gap-1 text-sm flex-wrap" aria-label="Breadcrumb">
-          <Link href="/projects" className="text-[var(--color-primary)] md-typescale-label-large min-h-[44px] inline-flex items-center">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(103,80,164,0.14),transparent_28%),var(--color-surface)]">
+      <TopBar title="Новый проект" subtitle="Заполняй только важное: остальное можно дополнить позже" />
+      <main className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 md:px-6 md:py-6">
+        <nav className="flex flex-wrap items-center gap-1 md-typescale-label-large" aria-label="Breadcrumb">
+          <Link href="/projects" className="text-[var(--color-primary)] min-h-[44px] inline-flex items-center">
             Проекты
           </Link>
           <span className="text-[var(--color-on-surface-variant)]">/</span>
-          <span className="text-[var(--color-on-surface-variant)] md-typescale-label-large min-h-[44px] inline-flex items-center">Новый проект</span>
+          <span className="text-[var(--color-on-surface-variant)] min-h-[44px] inline-flex items-center">Новый проект</span>
         </nav>
-        <div className="mb-4 rounded-[16px] bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)] p-4">
-          <p className="md-typescale-body-medium">Минимум для сохранения: название, цена и статусы.</p>
-        </div>
         <ProjectForm />
       </main>
     </div>

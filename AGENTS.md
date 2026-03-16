@@ -1,6 +1,6 @@
 # AGENTS.md
 
-## Local project rule
+## Local project rules
 
 For this project only (`rc-web-clients`):
 
@@ -10,5 +10,7 @@ For this project only (`rc-web-clients`):
   - "push"
   - "запушь"
   - "отправь в github"
+- Keep replies short and practical.
+- Avoid unnecessary explanation or chatter.
 
-This rule is local to this repository and does not apply globally to other projects.
+These rules are local to this repository and do not apply globally to other projects.

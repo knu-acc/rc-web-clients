@@ -2,6 +2,7 @@
 
 import { WORK_STATUS_OPTIONS } from "@/lib/constants";
 import type { WorkStatus } from "@/lib/types";
+import { hapticLight } from "@/lib/haptics";
 
 interface ProjectFiltersProps {
   value: WorkStatus | "all";
@@ -19,7 +20,10 @@ export default function ProjectFilters({ value, onChange }: ProjectFiltersProps)
           <button
             key={opt.value}
             type="button"
-            onClick={() => onChange(opt.value as WorkStatus | "all")}
+            onClick={() => {
+              hapticLight();
+              onChange(opt.value as WorkStatus | "all");
+            }}
             className={[
               "shrink-0 rounded-full px-4 py-2 md-typescale-label-large transition-colors",
               active

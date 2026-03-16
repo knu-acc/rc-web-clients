@@ -17,6 +17,7 @@ import FileUpload from "@/components/ui/FileUpload";
 import Textarea from "@/components/ui/Textarea";
 import PageSection from "@/components/material/PageSection";
 import ContactActions from "./ContactActions";
+import { hapticSuccess } from "@/lib/haptics";
 
 interface ProjectFormProps {
   project?: Project | null;
@@ -85,6 +86,7 @@ export default function ProjectForm({ project }: ProjectFormProps) {
         }
         const { error: updateErr } = await supabase.from("projects").update({ ...payload, contract_url: urlToSave }).eq("id", project.id);
         if (updateErr) throw updateErr;
+        hapticSuccess();
         router.push(`/projects/${project.id}`);
       } else {
         const { data: inserted, error: insertErr } = await supabase.from("projects").insert({ ...payload, contract_url: null }).select("id").single();
@@ -94,6 +96,7 @@ export default function ProjectForm({ project }: ProjectFormProps) {
           await supabase.storage.from(CONTRACTS_BUCKET).upload(path, contractFile, { upsert: true });
           await supabase.from("projects").update({ contract_url: path }).eq("id", inserted.id);
         }
+        hapticSuccess();
         router.push(`/projects/${inserted.id}`);
       }
     } catch (err: unknown) {
@@ -112,17 +115,17 @@ export default function ProjectForm({ project }: ProjectFormProps) {
     <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-3xl flex-col gap-5 pb-32">
       <PageSection title={project ? "Редактирование" : "Новый проект"} tonal>
         <div className="grid gap-4 md:grid-cols-2">
-          <Input label="Название проекта / клиент" value={projectName} onChange={(e) => setProjectName(e.target.value)} required placeholder="RC Dental" />
-          <Input label="Сумма (₸)" type="number" min={0} step={1} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="1350000" />
+          <Input label="Название проекта / клиент" value={projectName} onChange={(e) => setProjectName(e.target.value)} required placeholder="RC Dental" autoFocus autoComplete="organization" />
+          <Input label="Сумма (₸)" type="number" min={0} step={1} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="1350000" inputMode="numeric" />
         </div>
       </PageSection>
 
       <PageSection title="Контакты">
         <div className="grid gap-4 md:grid-cols-2">
-          <Input label="Телефон" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+7 777 123 45 67" />
-          <Input label="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} placeholder="@username" />
+          <Input label="Телефон" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+7 777 123 45 67" autoComplete="tel" inputMode="tel" />
+          <Input label="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} placeholder="@username" autoComplete="username" />
         </div>
-        <Input label="Сайт" type="url" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://example.com" />
+        <Input label="Сайт" type="url" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://example.com" inputMode="url" autoComplete="url" />
         <ContactActions name={projectName || "contact"} phone={phone} telegram={telegram} website={websiteUrl} note={notes} compact />
       </PageSection>
 

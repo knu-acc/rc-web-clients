@@ -4,11 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Project, WorkStatus, PaymentStatus } from "@/lib/types";
-import {
-  WORK_STATUS_OPTIONS,
-  PAYMENT_STATUS_OPTIONS,
-  CONTRACTS_BUCKET,
-} from "@/lib/constants";
+import { WORK_STATUS_OPTIONS, PAYMENT_STATUS_OPTIONS, CONTRACTS_BUCKET } from "@/lib/constants";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import type { SelectOption } from "@/components/ui/Select";
@@ -17,6 +13,7 @@ import FileUpload from "@/components/ui/FileUpload";
 import Textarea from "@/components/ui/Textarea";
 import PageSection from "@/components/material/PageSection";
 import ContactActions from "./ContactActions";
+import ContactImportButton from "./ContactImportButton";
 import { hapticSuccess } from "@/lib/haptics";
 
 interface ProjectFormProps {
@@ -106,11 +103,6 @@ export default function ProjectForm({ project }: ProjectFormProps) {
     }
   };
 
-  const handleFileChange = (file: File | null) => {
-    setContractFile(file);
-    if (!file) setContractUrl(null);
-  };
-
   return (
     <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-3xl flex-col gap-5 pb-32">
       <PageSection title={project ? "Редактирование" : "Новый проект"} tonal>
@@ -121,9 +113,15 @@ export default function ProjectForm({ project }: ProjectFormProps) {
       </PageSection>
 
       <PageSection title="Контакты">
+        <div className="flex flex-wrap gap-3">
+          <ContactImportButton onPick={(contact) => {
+            if (contact.name && !projectName) setProjectName(contact.name);
+            if (contact.tel) setPhone(contact.tel);
+          }} />
+        </div>
         <div className="grid gap-4 md:grid-cols-2">
           <Input label="Телефон" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+7 777 123 45 67" autoComplete="tel" inputMode="tel" />
-          <Input label="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} placeholder="@username" autoComplete="username" />
+          <Input label="Telegram (необязательно)" value={telegram} onChange={(e) => setTelegram(e.target.value)} placeholder="@username" autoComplete="username" />
         </div>
         <Input label="Сайт" type="url" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://example.com" inputMode="url" autoComplete="url" />
         <ContactActions name={projectName || "contact"} phone={phone} telegram={telegram} website={websiteUrl} note={notes} compact />
@@ -139,7 +137,10 @@ export default function ProjectForm({ project }: ProjectFormProps) {
       </PageSection>
 
       <PageSection title="Файлы и заметки">
-        <FileUpload label="Договор" value={contractFile} currentUrl={contractUrl} onChange={handleFileChange} />
+        <FileUpload label="Договор" value={contractFile} currentUrl={contractUrl} onChange={(file) => {
+          setContractFile(file);
+          if (!file) setContractUrl(null);
+        }} />
         <Textarea label="Заметки" value={notes} onChange={setNotes} placeholder="Нюансы по проекту" />
       </PageSection>
 

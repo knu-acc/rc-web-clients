@@ -29,7 +29,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       <div className="mt-4 grid gap-2 md:grid-cols-2">
-        <div className="rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3">
+        <div className="rounded-[var(--shape-l)] bg-[var(--color-surface-container)] px-4 py-3">
           <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">Телефон</p>
           <p className="md-typescale-body-large text-[var(--color-on-surface)]">{project.phone || "Не указан"}</p>
         </div>
@@ -40,22 +40,15 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       <div className="mt-4">
-        <ContactActions
-          compact
-          name={project.client_name}
-          phone={project.phone}
-          telegram={project.telegram}
-          website={project.website_url}
-          note={project.notes}
-        />
+        <ContactActions compact name={project.client_name} phone={project.phone} telegram={project.telegram} website={project.website_url} note={project.notes} />
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-3">
-        <Link href={`/projects/${project.id}`}>
-          <md-filled-button>Открыть</md-filled-button>
+      <div className="mt-5 grid grid-cols-2 gap-3">
+        <Link href={`/projects/${project.id}`} className="block">
+          <md-filled-button style={{ width: "100%" }}>Открыть</md-filled-button>
         </Link>
-        <Link href={`/projects/${project.id}/edit`}>
-          <md-outlined-button>Редактировать</md-outlined-button>
+        <Link href={`/projects/${project.id}/edit`} className="block">
+          <md-outlined-button style={{ width: "100%" }}>Редактировать</md-outlined-button>
         </Link>
       </div>
     </article>

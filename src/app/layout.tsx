@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import SitePasswordGate from "@/components/auth/SitePasswordGate";
 import { ThemeProvider } from "next-themes";
 import MaterialProvider from "@/components/material/MaterialProvider";
 import BlobDecoration from "@/components/layout/BlobDecoration";
 
-const roboto = Roboto({
+const notoSans = Noto_Sans({
   weight: ["400", "500", "700"],
   subsets: ["latin", "cyrillic"],
-  variable: "--font-roboto",
+  variable: "--font-noto-sans",
   display: "swap",
 });
 
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
-      <body className={`${roboto.variable} antialiased`}>
+      <body className={`${notoSans.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <MaterialProvider>
             <BlobDecoration />

@@ -104,16 +104,16 @@
   --m3-duration-long: 400ms;
   --m3-ease: cubic-bezier(0.2, 0, 0, 1);
 
-  /* M3 typography — Roboto via next/font */
-  --md-sys-typescale-body-large-font: "Roboto", system-ui, sans-serif;
-  --md-sys-typescale-body-medium-font: "Roboto", system-ui, sans-serif;
-  --md-sys-typescale-label-large-font: "Roboto", system-ui, sans-serif;
-  --md-sys-typescale-title-large-font: "Roboto", system-ui, sans-serif;
-  --md-sys-typescale-headline-small-font: "Roboto", system-ui, sans-serif;
+  /* Project typography — Noto Sans via next/font */
+  --md-sys-typescale-body-large-font: "Noto Sans", system-ui, sans-serif;
+  --md-sys-typescale-body-medium-font: "Noto Sans", system-ui, sans-serif;
+  --md-sys-typescale-label-large-font: "Noto Sans", system-ui, sans-serif;
+  --md-sys-typescale-title-large-font: "Noto Sans", system-ui, sans-serif;
+  --md-sys-typescale-headline-small-font: "Noto Sans", system-ui, sans-serif;
 
-  /* M3 ref palette (for component theming) */
-  --md-ref-typeface-plain: "Roboto", system-ui, sans-serif;
-  --md-ref-typeface-brand: "Roboto", system-ui, sans-serif;
+  /* Component typeface */
+  --md-ref-typeface-plain: "Noto Sans", system-ui, sans-serif;
+  --md-ref-typeface-brand: "Noto Sans", system-ui, sans-serif;
 }
 
 .dark {
@@ -159,14 +159,14 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-roboto), "Roboto", system-ui, sans-serif;
+  --font-sans: var(--font-noto-sans), "Noto Sans", system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--color-surface);
   color: var(--color-on-surface);
-  font-family: var(--font-sans), "Roboto", system-ui, sans-serif;
+  font-family: var(--font-sans), "Noto Sans", system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
 

@@ -1,5 +1,8 @@
-/** Site access code — required before Supabase login */
-export const SITE_PASSWORD = "4149";
+/**
+ * Site access code shown on the first gate screen.
+ * Not a secure secret (exposed to browser), but configurable per environment.
+ */
+export const SITE_PASSWORD = process.env.NEXT_PUBLIC_SITE_PASSWORD ?? "4149";
 
 /** Storage bucket name for contract files */
 export const CONTRACTS_BUCKET = "contracts";

@@ -85,6 +85,13 @@
   --md-sys-shape-corner-extra-large: 28px;
   --md-sys-shape-corner-full: 9999px;
 
+  --shape-xs: var(--md-sys-shape-corner-extra-small);
+  --shape-s: var(--md-sys-shape-corner-small);
+  --shape-m: var(--md-sys-shape-corner-medium);
+  --shape-l: var(--md-sys-shape-corner-large);
+  --shape-xl: var(--md-sys-shape-corner-extra-large);
+  --shape-full: var(--md-sys-shape-corner-full);
+
   /* M3 motion */
   --md-sys-motion-duration-short1: 50ms;
   --md-sys-motion-duration-short2: 100ms;

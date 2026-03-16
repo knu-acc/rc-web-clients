@@ -35,8 +35,8 @@ export default function ContactActions({
   };
 
   const baseClass = compact
-    ? "min-h-10 px-3 rounded-full md-typescale-label-medium"
-    : "min-h-11 px-4 rounded-full md-typescale-label-large";
+    ? "min-h-10 px-4 rounded-[var(--shape-full)] md-typescale-label-medium"
+    : "min-h-11 px-5 rounded-[var(--shape-full)] md-typescale-label-large";
 
   return (
     <div className="flex flex-wrap gap-2">

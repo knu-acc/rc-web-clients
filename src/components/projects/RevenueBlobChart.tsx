@@ -86,7 +86,7 @@ export default function RevenueBlobChart({ projects, month }: RevenueBlobChartPr
         </div>
         <div className="grid gap-3">
           {rings.map((ring, index) => (
-            <div key={`${ring.name}-${index}`} className="flex items-center justify-between gap-3 rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3">
+            <div key={`${ring.name}-${index}`} className="flex items-center justify-between gap-3 rounded-[var(--shape-l)] bg-[var(--color-surface-container)] px-4 py-3">
               <div className="flex min-w-0 items-center gap-3">
                 <span className="h-4 w-4 shrink-0 rounded-full" style={{ backgroundColor: ring.color }} />
                 <p className="truncate md-typescale-body-large text-[var(--color-on-surface)]">{ring.name}</p>

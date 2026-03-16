@@ -18,7 +18,7 @@ export default function MetricCard({
   return (
     <div
       className={[
-        "rounded-[24px] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container)] p-4 md:p-5",
+        "rounded-[var(--shape-xl)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container)] p-4 md:p-5",
         className,
       ].join(" ")}
     >

@@ -16,7 +16,7 @@ function formatPrice(n: number): string {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <article className="rounded-[28px] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+    <article className="rounded-[var(--shape-xl)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 space-y-1.5">
           <h2 className="truncate md-typescale-title-large text-[var(--color-on-surface)]">{project.client_name}</h2>
@@ -33,7 +33,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">Телефон</p>
           <p className="md-typescale-body-large text-[var(--color-on-surface)]">{project.phone || "Не указан"}</p>
         </div>
-        <div className="rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3">
+        <div className="rounded-[var(--shape-l)] bg-[var(--color-surface-container)] px-4 py-3">
           <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">Telegram</p>
           <p className="md-typescale-body-large text-[var(--color-on-surface)]">{project.telegram || "Не указан"}</p>
         </div>

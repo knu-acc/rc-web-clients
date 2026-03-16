@@ -51,36 +51,25 @@ export default function ProjectsPage() {
   const paidProjects = projects.filter((p) => p.payment_status === "paid").length;
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(103,80,164,0.14),transparent_26%),radial-gradient(circle_at_top_left,rgba(125,82,96,0.10),transparent_22%),var(--color-surface)] pb-24">
-      <TopBar title="Проекты" subtitle="Список, сумма за месяц и быстрый доступ к редактированию" />
+    <div className="min-h-screen bg-[var(--color-surface)] pb-24">
+      <TopBar title="Проекты" />
       <main className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-5 md:px-6 md:py-6">
         <section className="grid gap-4 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
-          <PageSection
-            title="Доход за месяц"
-            description="Сумма считается по оплаченной дате. Месяц можно быстро переключить."
-            tonal
-          >
+          <PageSection title="За месяц" tonal>
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
                 <p className="md-typescale-display-small">{formatKzt(monthlyTotal)}</p>
-                <p className="md-typescale-body-medium text-[color-mix(in_srgb,var(--color-on-primary-container)_78%,transparent)]">
-                  За выбранный период: {selectedMonth}
-                </p>
               </div>
               <InputMonth value={selectedMonth} onChange={setSelectedMonth} />
             </div>
           </PageSection>
-          <MetricCard
-            label="Всего проектов"
-            value={String(projects.length)}
-            supporting={filter === "all" ? "Показаны все записи" : `Фильтр: ${filter}`}
-          />
-          <MetricCard label="Оплачено полностью" value={String(paidProjects)} supporting="Количество закрытых по оплате" />
+          <MetricCard label="Всего" value={String(projects.length)} />
+          <MetricCard label="Оплачено" value={String(paidProjects)} />
         </section>
 
         <RevenueBlobChart projects={projects} month={selectedMonth} />
 
-        <PageSection title="Список проектов" description="Карточки упрощены: главное видно сразу, переход к правке — в одно нажатие.">
+        <PageSection title="Список">
           <ProjectFilters value={filter} onChange={setFilter} />
           {loading ? (
             <p className="py-8 text-center md-typescale-body-medium text-[var(--color-on-surface-variant)]">Загрузка…</p>
@@ -88,9 +77,6 @@ export default function ProjectsPage() {
             <div className="rounded-[24px] bg-[var(--color-surface-container)] px-5 py-10 text-center">
               <p className="md-typescale-title-medium text-[var(--color-on-surface)]">
                 {projects.length === 0 ? "Проектов пока нет" : "Нет проектов с этим статусом"}
-              </p>
-              <p className="mt-1 md-typescale-body-medium text-[var(--color-on-surface-variant)]">
-                {projects.length === 0 ? "Нажми на кнопку + и создай первую запись." : "Попробуй переключить фильтр или вернуть “Все”."}
               </p>
             </div>
           ) : (
@@ -113,7 +99,6 @@ export default function ProjectsPage() {
 function InputMonth({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   return (
     <label className="flex min-w-[196px] flex-col gap-1">
-      <span className="md-typescale-label-medium text-[color-mix(in_srgb,var(--color-on-primary-container)_78%,transparent)]">Месяц отчёта</span>
       <input
         type="month"
         value={value}

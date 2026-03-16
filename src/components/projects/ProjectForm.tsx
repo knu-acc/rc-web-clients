@@ -16,6 +16,7 @@ import Button from "@/components/ui/Button";
 import FileUpload from "@/components/ui/FileUpload";
 import Textarea from "@/components/ui/Textarea";
 import PageSection from "@/components/material/PageSection";
+import ContactActions from "./ContactActions";
 
 interface ProjectFormProps {
   project?: Project | null;
@@ -49,26 +50,16 @@ export default function ProjectForm({ project }: ProjectFormProps) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
-
     const name = projectName.trim();
-    if (!name) {
-      setError("Укажите название проекта или имя клиента.");
-      return;
-    }
-
-    if (websiteUrl && !/^https?:\/\//i.test(websiteUrl)) {
-      setError("Ссылка на сайт должна начинаться с http:// или https://");
-      return;
-    }
+    if (!name) return setError("Укажи название проекта.");
+    if (websiteUrl && !/^https?:\/\//i.test(websiteUrl)) return setError("Ссылка на сайт должна начинаться с http:// или https://");
 
     setLoading(true);
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
-
     if (!user) {
-      setError("Нужна авторизация.");
       setLoading(false);
-      return;
+      return setError("Нужна авторизация.");
     }
 
     let urlToSave: string | null = contractUrl;
@@ -92,29 +83,17 @@ export default function ProjectForm({ project }: ProjectFormProps) {
           const { error: uploadErr } = await supabase.storage.from(CONTRACTS_BUCKET).upload(path, contractFile, { upsert: true });
           if (!uploadErr) urlToSave = path;
         }
-
-        const { error: updateErr } = await supabase
-          .from("projects")
-          .update({ ...payload, contract_url: urlToSave })
-          .eq("id", project.id);
-
+        const { error: updateErr } = await supabase.from("projects").update({ ...payload, contract_url: urlToSave }).eq("id", project.id);
         if (updateErr) throw updateErr;
         router.push(`/projects/${project.id}`);
       } else {
-        const { data: inserted, error: insertErr } = await supabase
-          .from("projects")
-          .insert({ ...payload, contract_url: null })
-          .select("id")
-          .single();
-
+        const { data: inserted, error: insertErr } = await supabase.from("projects").insert({ ...payload, contract_url: null }).select("id").single();
         if (insertErr) throw insertErr;
-
         if (contractFile) {
           const path = `${user.id}/${inserted.id}/${contractFile.name}`;
           await supabase.storage.from(CONTRACTS_BUCKET).upload(path, contractFile, { upsert: true });
           await supabase.from("projects").update({ contract_url: path }).eq("id", inserted.id);
         }
-
         router.push(`/projects/${inserted.id}`);
       }
     } catch (err: unknown) {
@@ -131,128 +110,42 @@ export default function ProjectForm({ project }: ProjectFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="mx-auto flex w-full max-w-3xl flex-col gap-5 pb-32">
-      <PageSection
-        title={project ? "Редактирование проекта" : "Новый проект"}
-        description="Структура формы разделена по смыслу: проект, связь, статусы и документы. Телефон и Telegram — отдельные поля, не один и тот же контакт."
-        tonal
-      >
+      <PageSection title={project ? "Редактирование" : "Новый проект"} tonal>
         <div className="grid gap-4 md:grid-cols-2">
-          <Input
-            label="Название проекта / клиент"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            required
-            placeholder="Например: RC Dental"
-            hint="Сейчас сохраняется в поле client_name. Позже его можно переименовать в схеме Supabase без переписывания всей формы."
-          />
-          <Input
-            label="Сумма проекта (₸)"
-            type="number"
-            min={0}
-            step={1}
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="1350000"
-            hint="Если сумма пока неизвестна, оставь 0 и обнови позже."
-          />
+          <Input label="Название проекта / клиент" value={projectName} onChange={(e) => setProjectName(e.target.value)} required placeholder="RC Dental" />
+          <Input label="Сумма (₸)" type="number" min={0} step={1} value={price} onChange={(e) => setPrice(e.target.value)} placeholder="1350000" />
         </div>
       </PageSection>
 
-      <PageSection
-        title="Контакты и ссылка"
-        description="Контакты не смешиваются: телефон отдельно, Telegram отдельно. Так данные проще обновлять и искать."
-      >
+      <PageSection title="Контакты">
         <div className="grid gap-4 md:grid-cols-2">
-          <Input
-            label="Телефон"
-            type="tel"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="+7 777 123 45 67"
-            hint="Только номер телефона клиента или менеджера."
-          />
-          <Input
-            label="Telegram"
-            value={telegram}
-            onChange={(e) => setTelegram(e.target.value)}
-            placeholder="@username"
-            hint="Только Telegram, не номер телефона."
-          />
+          <Input label="Телефон" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+7 777 123 45 67" />
+          <Input label="Telegram" value={telegram} onChange={(e) => setTelegram(e.target.value)} placeholder="@username" />
         </div>
-        <Input
-          label="Ссылка на готовый сайт"
-          type="url"
-          value={websiteUrl}
-          onChange={(e) => setWebsiteUrl(e.target.value)}
-          placeholder="https://example.com"
-          hint="Если сайт ещё не опубликован — оставь пустым."
-        />
+        <Input label="Сайт" type="url" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://example.com" />
+        <ContactActions name={projectName || "contact"} phone={phone} telegram={telegram} website={websiteUrl} note={notes} compact />
       </PageSection>
 
-      <PageSection
-        title="Статусы и даты"
-        description="Основные операционные поля вынесены в отдельный блок, чтобы их было удобно обновлять без прокрутки по всей форме."
-      >
+      <PageSection title="Статусы">
         <div className="grid gap-4 md:grid-cols-2">
-          <Select
-            label="Статус работы"
-            options={workOptions}
-            value={workStatus}
-            onChange={(e) => setWorkStatus(e.target.value as WorkStatus)}
-          />
-          <Select
-            label="Статус оплаты"
-            options={paymentOptions}
-            value={paymentStatus}
-            onChange={(e) => setPaymentStatus(e.target.value as PaymentStatus)}
-          />
-          <Input
-            label="Дата оплаты"
-            type="date"
-            value={paidAt}
-            onChange={(e) => setPaidAt(e.target.value)}
-          />
-          <Input
-            label="Дата создания сайта"
-            type="date"
-            value={siteCreatedAt}
-            onChange={(e) => setSiteCreatedAt(e.target.value)}
-          />
+          <Select label="Статус работы" options={workOptions} value={workStatus} onChange={(e) => setWorkStatus(e.target.value as WorkStatus)} />
+          <Select label="Статус оплаты" options={paymentOptions} value={paymentStatus} onChange={(e) => setPaymentStatus(e.target.value as PaymentStatus)} />
+          <Input label="Дата оплаты" type="date" value={paidAt} onChange={(e) => setPaidAt(e.target.value)} />
+          <Input label="Дата создания сайта" type="date" value={siteCreatedAt} onChange={(e) => setSiteCreatedAt(e.target.value)} />
         </div>
       </PageSection>
 
-      <PageSection
-        title="Документы и заметки"
-        description="Редкие и тяжёлые поля оставлены внизу, чтобы основная часть ввода оставалась быстрой."
-      >
-        <FileUpload
-          label="Договор (PDF или изображение)"
-          value={contractFile}
-          currentUrl={contractUrl}
-          onChange={handleFileChange}
-        />
-        <Textarea
-          label="Заметки"
-          value={notes}
-          onChange={setNotes}
-          placeholder="Что важно помнить по проекту, по клиенту, по дедлайнам или по оплате…"
-          hint="Поле для свободного текста. Сюда удобно складывать все нюансы, пока отдельные поля не вынесены в Supabase."
-        />
+      <PageSection title="Файлы и заметки">
+        <FileUpload label="Договор" value={contractFile} currentUrl={contractUrl} onChange={handleFileChange} />
+        <Textarea label="Заметки" value={notes} onChange={setNotes} placeholder="Нюансы по проекту" />
       </PageSection>
 
       {error ? <p className="md-typescale-body-medium text-[var(--color-error)]">{error}</p> : null}
 
       <div className="sticky bottom-0 z-20 -mx-4 border-t border-[var(--color-outline-variant)] bg-[color-mix(in_srgb,var(--color-surface)_94%,transparent)] px-4 py-3 backdrop-blur-xl md:-mx-6 md:px-6">
         <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:flex-row sm:justify-end">
-          <Button type="button" variant="text" onClick={() => router.back()}>
-            Назад
-          </Button>
-          <Button type="submit" variant="outlined">
-            {project ? "Сохранить изменения" : "Проверить и сохранить"}
-          </Button>
-          <Button type="submit" disabled={loading}>
-            {loading ? "Сохранение…" : project ? "Обновить проект" : "Создать проект"}
-          </Button>
+          <Button type="button" variant="text" onClick={() => router.back()}>Назад</Button>
+          <Button type="submit" disabled={loading}>{loading ? "Сохранение…" : project ? "Сохранить" : "Создать"}</Button>
         </div>
       </div>
     </form>

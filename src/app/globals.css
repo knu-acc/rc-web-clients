@@ -163,6 +163,28 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+md-filled-button,
+md-outlined-button,
+md-filled-tonal-button,
+md-text-button {
+  --md-filled-button-container-shape: 9999px;
+  --md-outlined-button-container-shape: 9999px;
+  --md-filled-tonal-button-container-shape: 9999px;
+  --md-text-button-container-shape: 9999px;
+  --md-filled-button-container-height: 44px;
+  --md-outlined-button-container-height: 44px;
+  --md-filled-tonal-button-container-height: 44px;
+  --md-text-button-container-height: 44px;
+  --md-filled-button-leading-space: 20px;
+  --md-filled-button-trailing-space: 20px;
+  --md-outlined-button-leading-space: 20px;
+  --md-outlined-button-trailing-space: 20px;
+  --md-filled-tonal-button-leading-space: 20px;
+  --md-filled-tonal-button-trailing-space: 20px;
+  --md-text-button-leading-space: 18px;
+  --md-text-button-trailing-space: 18px;
+}
+
 /* M3 Typescale utility classes */
 .md-typescale-display-large { font-size: 57px; line-height: 64px; font-weight: 400; letter-spacing: -0.25px; }
 .md-typescale-display-medium { font-size: 45px; line-height: 52px; font-weight: 400; }

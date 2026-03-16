@@ -5,6 +5,7 @@ import TopBar from "@/components/layout/TopBar";
 import DeleteProjectButton from "./ui-delete-button";
 import StatusBadge from "@/components/projects/StatusBadge";
 import PageSection from "@/components/material/PageSection";
+import ContactActions from "@/components/projects/ContactActions";
 
 function formatKzt(n: number): string {
   if (!n) return "—";
@@ -27,8 +28,8 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   if (error || !project) notFound();
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(103,80,164,0.14),transparent_28%),var(--color-surface)] pb-10">
-      <TopBar title={project.client_name} subtitle="Карточка проекта и быстрые действия" />
+    <div className="min-h-screen bg-[var(--color-surface)] pb-10">
+      <TopBar title={project.client_name} />
       <main className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 md:px-6 md:py-6">
         <nav className="flex flex-wrap items-center gap-1 md-typescale-label-large" aria-label="Breadcrumb">
           <Link href="/projects" className="text-[var(--color-primary)] min-h-[44px] inline-flex items-center">Проекты</Link>
@@ -36,7 +37,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           <span className="text-[var(--color-on-surface-variant)] min-h-[44px] inline-flex max-w-[240px] items-center truncate">{project.client_name}</span>
         </nav>
 
-        <PageSection title={project.client_name} description="Самое важное собрано вверху: сумма, статусы и связь.">
+        <PageSection title={project.client_name}>
           <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div className="space-y-3">
               <div className="flex flex-wrap gap-2">
@@ -44,6 +45,13 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 <StatusBadge value={project.payment_status} kind="payment" />
               </div>
               <p className="md-typescale-display-small text-[var(--color-primary)]">{formatKzt(Number(project.price))}</p>
+              <ContactActions
+                name={project.client_name}
+                phone={project.phone}
+                telegram={project.telegram}
+                website={project.website_url}
+                note={project.notes}
+              />
             </div>
             <div className="flex flex-wrap gap-3">
               <Link href={`/projects/${project.id}/edit`}>
@@ -55,13 +63,13 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </PageSection>
 
         <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-          <PageSection title="Контакты" description="Телефон и Telegram разведены отдельно, без смешивания каналов связи.">
+          <PageSection title="Контакты">
             <DetailRow label="Телефон" value={detailValue(project.phone)} />
             <DetailRow label="Telegram" value={detailValue(project.telegram)} />
             <DetailRow label="Сайт" value={detailValue(project.website_url)} isLink={Boolean(project.website_url)} />
           </PageSection>
 
-          <PageSection title="Статусы и даты" description="Поля, которые чаще всего обновляются в процессе работы.">
+          <PageSection title="Статусы и даты">
             <DetailRow label="Статус работы" value={project.work_status} />
             <DetailRow label="Статус оплаты" value={project.payment_status} />
             <DetailRow label="Дата оплаты" value={detailValue(project.paid_at)} />
@@ -70,7 +78,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         </div>
 
         <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
-          <PageSection title="Документы" description="Сюда можно позже вынести отдельную модель файлов, но пока всё собрано в одном месте.">
+          <PageSection title="Документы">
             {project.contract_url ? (
               <p className="break-all md-typescale-body-medium text-[var(--color-on-surface)]">{project.contract_url}</p>
             ) : (
@@ -78,7 +86,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             )}
           </PageSection>
 
-          <PageSection title="Заметки" description="Свободный текст для нюансов, дедлайнов и контекста.">
+          <PageSection title="Заметки">
             <p className="whitespace-pre-wrap md-typescale-body-large text-[var(--color-on-surface)]">
               {detailValue(project.notes, "Пока без заметок.")}
             </p>

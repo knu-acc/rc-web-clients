@@ -1,139 +1,111 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { Project } from "@/lib/types";
 
 function formatKzt(value: number): string {
   return `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(value)} ₸`;
 }
 
-function getProjectLabel(project: Project): string {
-  if (project.website_url) {
-    try {
-      const host = new URL(project.website_url).hostname.replace("www.", "");
-      return host;
-    } catch {
-      return project.website_url;
-    }
-  }
-  return project.client_name;
-}
-
-/**
- * Fluent / organic shape: круглый круг, но граница — синусоида (волна по радиусу).
- * r(θ) = R + A·sin(n·θ), одна гармоника — плавная «вырезка» по краю.
- */
-function organicRadius(angle: number, baseR: number): number {
-  const waves = 6;
-  const amplitude = 0.06;
-  return baseR * (1 + amplitude * Math.sin(waves * angle));
-}
-
-function organicPoint(angle: number, baseR: number, cx: number, cy: number) {
-  const r = organicRadius(angle, baseR);
-  return { x: cx + r * Math.cos(angle), y: cy - r * Math.sin(angle) };
-}
-
-const PALETTE = [
-  "#1976D2", "#7B1FA2", "#C2185B", "#00838F", "#558B2F", "#F9A825", "#E64A19", "#5D4037",
-];
-
 interface RevenueBlobChartProps {
   projects: Project[];
   month: string;
 }
 
+const COLORS = [
+  "var(--color-primary)",
+  "var(--color-secondary)",
+  "var(--color-tertiary)",
+  "#3f8cff",
+  "#2e7d32",
+  "#ef6c00",
+];
+
 export default function RevenueBlobChart({ projects, month }: RevenueBlobChartProps) {
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const paidInMonth = useMemo(
+  const paid = useMemo(
     () => projects.filter((p) => p.paid_at?.slice(0, 7) === month && Number(p.price) > 0),
     [projects, month]
   );
 
-  const { labels, values, total, segments, cx, cy, baseR } = useMemo(() => {
-    const labels = paidInMonth.map(getProjectLabel);
-    const values = paidInMonth.map((p) => Number(p.price) || 0);
-    const total = values.reduce((s, v) => s + v, 0);
-    const cx = 120;
-    const cy = 120;
-    const baseR = 95;
-    const segments: { startAngle: number; endAngle: number; color: string; label: string; value: number }[] = [];
-    let acc = 0;
-    for (let i = 0; i < values.length; i++) {
-      const span = total > 0 ? (values[i] / total) * 2 * Math.PI : 0;
-      segments.push({
-        startAngle: acc,
-        endAngle: acc + span,
-        color: PALETTE[i % PALETTE.length],
-        label: labels[i],
-        value: values[i],
-      });
-      acc += span;
-    }
-    return { labels, values, total, segments, cx, cy, baseR };
-  }, [paidInMonth]);
+  const total = paid.reduce((sum, p) => sum + Number(p.price || 0), 0);
 
-  if (!paidInMonth.length) {
+  if (!paid.length || total <= 0) {
     return (
-      <div className="rounded-[16px] p-4 bg-[var(--color-surface-container)] border border-[var(--color-outline-variant)]/50">
-        <h3 className="md-typescale-title-medium text-[var(--color-on-surface)] mb-2">Доход по сайтам</h3>
-        <p className="md-typescale-body-medium text-[var(--color-on-surface-variant)]">В этом месяце нет оплаченных проектов.</p>
-      </div>
+      <section className="rounded-[28px] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] p-5">
+        <h2 className="md-typescale-title-large text-[var(--color-on-surface)]">Доход по проектам</h2>
+      </section>
     );
   }
 
-  const pathForSegment = (start: number, end: number) => {
-    const pts: { x: number; y: number }[] = [];
-    const steps = Math.max(12, Math.ceil((end - start) * 24));
-    for (let i = 0; i <= steps; i++) {
-      const a = start + (end - start) * (i / steps);
-      pts.push(organicPoint(a, baseR, cx, cy));
-    }
-    const startPt = organicPoint(start, baseR, cx, cy);
-    let d = `M ${cx} ${cy}`;
-    d += ` L ${startPt.x} ${startPt.y}`;
-    pts.forEach((p, i) => {
-      if (i === 0) return;
-      d += ` L ${p.x} ${p.y}`;
-    });
-    d += ` Z`;
-    return d;
-  };
+  let offset = 0;
+  const rings = paid.slice(0, 6).map((project, index) => {
+    const value = Number(project.price || 0);
+    const ratio = value / total;
+    const radius = 34 + ratio * 86;
+    const item = {
+      name: project.client_name,
+      value,
+      radius,
+      color: COLORS[index % COLORS.length],
+      x: 150 + Math.cos(index * 1.05 - 1.2) * (offset + 12),
+      y: 138 + Math.sin(index * 1.05 - 1.2) * (offset * 0.58),
+    };
+    offset += 26;
+    return item;
+  });
 
   return (
-    <div className="rounded-[16px] p-4 bg-[var(--color-surface-container)] border border-[var(--color-outline-variant)]/50">
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="md-typescale-title-medium text-[var(--color-on-surface)]">Доход по сайтам</h3>
-        <span className="md-typescale-label-large text-[var(--color-on-surface-variant)]">{formatKzt(total)}</span>
+    <section className="rounded-[28px] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] p-5 md:p-6">
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <h2 className="md-typescale-title-large text-[var(--color-on-surface)]">Доход по проектам</h2>
+        <span className="md-typescale-title-medium text-[var(--color-on-surface-variant)]">{formatKzt(total)}</span>
       </div>
-      <div className="max-w-[280px] mx-auto">
-        <svg viewBox="0 0 240 240" className="w-full h-auto" aria-label="Круговая диаграмма дохода">
-          {segments.map((seg, i) => (
-            <path
-              key={i}
-              d={pathForSegment(seg.startAngle, seg.endAngle)}
-              fill={seg.color}
-              opacity={hoverIndex === null ? 1 : hoverIndex === i ? 1 : 0.45}
-              onMouseEnter={() => setHoverIndex(i)}
-              onMouseLeave={() => setHoverIndex(null)}
-              className="transition-opacity duration-200"
-            />
+      <div className="grid gap-5 lg:grid-cols-[340px_1fr] lg:items-center">
+        <div className="mx-auto w-full max-w-[340px]">
+          <svg viewBox="0 0 300 300" className="h-auto w-full" aria-label="Круги дохода по проектам">
+            <defs>
+              <radialGradient id="surfaceGlow" cx="50%" cy="50%" r="60%">
+                <stop offset="0%" stopColor="var(--color-primary-container)" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="var(--color-surface-container-high)" stopOpacity="0.35" />
+              </radialGradient>
+            </defs>
+            <circle cx="150" cy="150" r="116" fill="url(#surfaceGlow)" />
+            {rings.map((ring, index) => (
+              <g key={`${ring.name}-${index}`}>
+                <circle cx={ring.x} cy={ring.y} r={ring.radius} fill={ring.color} opacity="0.18" />
+                <circle cx={ring.x} cy={ring.y} r={Math.max(26, ring.radius - 10)} fill={ring.color} opacity="0.9" />
+                <text x={ring.x} y={ring.y - 4} textAnchor="middle" fill="white" fontSize="11" fontWeight="600">
+                  {trimLabel(ring.name)}
+                </text>
+                <text x={ring.x} y={ring.y + 14} textAnchor="middle" fill="white" fontSize="10" opacity="0.92">
+                  {formatCompact(ring.value)}
+                </text>
+              </g>
+            ))}
+          </svg>
+        </div>
+        <div className="grid gap-3">
+          {rings.map((ring, index) => (
+            <div key={`${ring.name}-${index}`} className="flex items-center justify-between gap-3 rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="h-4 w-4 shrink-0 rounded-full" style={{ backgroundColor: ring.color }} />
+                <p className="truncate md-typescale-body-large text-[var(--color-on-surface)]">{ring.name}</p>
+              </div>
+              <p className="shrink-0 md-typescale-label-large text-[var(--color-on-surface)]">{formatKzt(ring.value)}</p>
+            </div>
           ))}
-        </svg>
+        </div>
       </div>
-      <ul className="mt-3 space-y-1 md-typescale-body-small text-[var(--color-on-surface-variant)]">
-        {segments.map((seg, i) => (
-          <li key={i} className="flex items-center gap-2">
-            <span
-              className="w-3 h-3 rounded-full shrink-0"
-              style={{ background: seg.color }}
-              aria-hidden
-            />
-            <span className="truncate">{seg.label}</span>
-            <span className="shrink-0 md-typescale-label-medium text-[var(--color-on-surface)]">{formatKzt(seg.value)}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    </section>
   );
+}
+
+function trimLabel(value: string) {
+  return value.length > 10 ? `${value.slice(0, 9)}…` : value;
+}
+
+function formatCompact(value: number) {
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}м`;
+  if (value >= 1_000) return `${Math.round(value / 1000)}к`;
+  return String(Math.round(value));
 }

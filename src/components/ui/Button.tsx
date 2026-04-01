@@ -1,6 +1,6 @@
 "use client";
 
-import { type ButtonHTMLAttributes, type ReactNode, useRef, useEffect } from "react";
+import { type ButtonHTMLAttributes, type ReactNode } from "react";
 
 type Variant = "filled" | "tonal" | "outlined" | "text" | "elevated";
 
@@ -28,24 +28,14 @@ export default function Button({
   onClick,
   ...props
 }: ButtonProps) {
-  const ref = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !onClick) return;
-    const handler = onClick as unknown as EventListener;
-    el.addEventListener("click", handler);
-    return () => el.removeEventListener("click", handler);
-  }, [onClick]);
-
   const Tag = TAG_MAP[variant] as string;
 
   return (
     // @ts-expect-error custom element
     <Tag
-      ref={ref}
       type={type}
       disabled={disabled || undefined}
+      onClick={disabled ? undefined : onClick}
       class={[fullWidth && "w-full", className].filter(Boolean).join(" ")}
       style={fullWidth ? { display: "block", width: "100%" } : undefined}
       {...props}

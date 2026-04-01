@@ -18,7 +18,7 @@ export default function PageSection({
   return (
     <section
       className={[
-        "rounded-[var(--shape-xl)] border p-5 md:p-6 space-y-4",
+        "rounded-[var(--shape-xl)] border p-5 md:p-6 space-y-4 m3-elevation-1",
         tonal
           ? "border-transparent bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
           : "border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] text-[var(--color-on-surface)]",

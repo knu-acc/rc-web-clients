@@ -48,6 +48,7 @@
 
   /* M3 surface-tint (used for elevation tint) */
   --md-sys-color-surface-tint: #6750a4;
+  --md-sys-color-shadow: #000000;
 
   /* Aliases for existing Tailwind classes */
   --color-surface: var(--md-sys-color-surface);
@@ -75,6 +76,36 @@
 
   --background: var(--md-sys-color-surface);
   --foreground: var(--md-sys-color-on-surface);
+
+
+
+  /* M3 elevation + state-layer tokens */
+  --elevation-0: none;
+  --elevation-1: 0 1px 2px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 16%, transparent), 0 1px 3px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 8%, transparent);
+  --elevation-2: 0 2px 6px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 18%, transparent), 0 1px 2px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 10%, transparent);
+  --elevation-3: 0 4px 10px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 20%, transparent), 0 2px 4px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 12%, transparent);
+  --elevation-4: 0 8px 16px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 22%, transparent), 0 3px 6px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 14%, transparent);
+  --elevation-5: 0 12px 24px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 24%, transparent), 0 6px 10px color-mix(in srgb, var(--md-sys-color-shadow, #000000) 16%, transparent);
+
+  --state-layer-rest: inset 0 0 0 9999px transparent;
+  --state-layer-hover: inset 0 0 0 9999px color-mix(in srgb, var(--md-sys-color-on-surface) 8%, transparent);
+  --state-layer-focus: inset 0 0 0 9999px color-mix(in srgb, var(--md-sys-color-on-surface) 12%, transparent);
+  --state-layer-pressed: inset 0 0 0 9999px color-mix(in srgb, var(--md-sys-color-on-surface) 14%, transparent);
+
+  --elevation-state-0-rest: var(--elevation-0), var(--state-layer-rest);
+  --elevation-state-0-hover: var(--elevation-1), var(--state-layer-hover);
+  --elevation-state-0-focus: var(--elevation-1), var(--state-layer-focus);
+  --elevation-state-0-pressed: var(--elevation-0), var(--state-layer-pressed);
+
+  --elevation-state-1-rest: var(--elevation-1), var(--state-layer-rest);
+  --elevation-state-1-hover: var(--elevation-2), var(--state-layer-hover);
+  --elevation-state-1-focus: var(--elevation-2), var(--state-layer-focus);
+  --elevation-state-1-pressed: var(--elevation-1), var(--state-layer-pressed);
+
+  --elevation-state-2-rest: var(--elevation-2), var(--state-layer-rest);
+  --elevation-state-2-hover: var(--elevation-3), var(--state-layer-hover);
+  --elevation-state-2-focus: var(--elevation-3), var(--state-layer-focus);
+  --elevation-state-2-pressed: var(--elevation-2), var(--state-layer-pressed);
 
   /* M3 shape */
   --md-sys-shape-corner-none: 0;
@@ -151,6 +182,11 @@
   --md-sys-color-outline: #938f99;
   --md-sys-color-outline-variant: #49454f;
   --md-sys-color-surface-tint: #d0bcff;
+  --md-sys-color-shadow: #000000;
+
+  --state-layer-hover: inset 0 0 0 9999px color-mix(in srgb, var(--md-sys-color-on-surface) 10%, transparent);
+  --state-layer-focus: inset 0 0 0 9999px color-mix(in srgb, var(--md-sys-color-on-surface) 14%, transparent);
+  --state-layer-pressed: inset 0 0 0 9999px color-mix(in srgb, var(--md-sys-color-on-surface) 16%, transparent);
 
   --background: var(--md-sys-color-surface);
   --foreground: var(--md-sys-color-on-surface);
@@ -208,6 +244,68 @@ md-text-button {
 .md-typescale-label-large { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0.1px; }
 .md-typescale-label-medium { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.5px; }
 .md-typescale-label-small { font-size: 11px; line-height: 16px; font-weight: 500; letter-spacing: 0.5px; }
+
+
+
+.m3-elevation-0 { box-shadow: var(--elevation-0); }
+.m3-elevation-1 { box-shadow: var(--elevation-1); }
+.m3-elevation-2 { box-shadow: var(--elevation-2); }
+.m3-elevation-3 { box-shadow: var(--elevation-3); }
+.m3-elevation-4 { box-shadow: var(--elevation-4); }
+.m3-elevation-5 { box-shadow: var(--elevation-5); }
+
+.m3-interactive-surface {
+  box-shadow: var(--elevation-state-1-rest);
+  transition:
+    box-shadow var(--m3-duration-medium) var(--m3-ease),
+    transform var(--m3-duration-short) var(--m3-ease);
+}
+
+.m3-interactive-surface:hover { box-shadow: var(--elevation-state-1-hover); }
+.m3-interactive-surface:focus-visible { box-shadow: var(--elevation-state-1-focus); }
+.m3-interactive-surface:active { box-shadow: var(--elevation-state-1-pressed); }
+
+.m3-interactive-raised {
+  box-shadow: var(--elevation-state-2-rest);
+  transition:
+    box-shadow var(--m3-duration-medium) var(--m3-ease),
+    transform var(--m3-duration-short) var(--m3-ease);
+}
+
+.m3-interactive-raised:hover { box-shadow: var(--elevation-state-2-hover); }
+.m3-interactive-raised:focus-visible { box-shadow: var(--elevation-state-2-focus); }
+.m3-interactive-raised:active { box-shadow: var(--elevation-state-2-pressed); }
+
+md-filled-button,
+md-filled-tonal-button,
+md-outlined-button,
+md-text-button {
+  transition: box-shadow var(--m3-duration-medium) var(--m3-ease), transform var(--m3-duration-short) var(--m3-ease);
+}
+
+md-filled-button,
+md-filled-tonal-button,
+md-outlined-button {
+  box-shadow: var(--elevation-state-0-rest);
+}
+
+md-filled-button:hover,
+md-filled-tonal-button:hover,
+md-outlined-button:hover {
+  box-shadow: var(--elevation-state-1-hover);
+}
+
+md-filled-button:focus-visible,
+md-filled-tonal-button:focus-visible,
+md-outlined-button:focus-visible {
+  box-shadow: var(--elevation-state-1-focus);
+}
+
+md-filled-button:active,
+md-filled-tonal-button:active,
+md-outlined-button:active {
+  box-shadow: var(--elevation-state-0-pressed);
+}
 
 @media (prefers-reduced-motion: no-preference) {
   a, button, [role="button"], input, select, textarea {

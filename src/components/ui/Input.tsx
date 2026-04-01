@@ -95,6 +95,7 @@ export default function Input({
         autocomplete={autoComplete || undefined}
         inputmode={inputMode || undefined}
         name={name || undefined}
+        class="ui-input"
         style={{ width: "100%" }}
       />
     </div>

@@ -9,6 +9,7 @@ import FAB from "@/components/layout/FAB";
 import PageSection from "@/components/material/PageSection";
 import ClientCookieWheel from "@/components/projects/ClientCookieWheel";
 import ContactActions from "@/components/projects/ContactActions";
+import Card from "@/components/ui/Card";
 
 function formatKzt(value: number) {
   return `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(value)} ₸`;
@@ -20,7 +21,10 @@ export default function HomePage() {
 
   const fetchProjects = useCallback(async () => {
     const supabase = createClient();
-    const { data } = await supabase.from("projects").select("*").order("created_at", { ascending: false });
+    const { data } = await supabase
+      .from("projects")
+      .select("*")
+      .order("created_at", { ascending: false });
     setProjects(data ?? []);
     if (data?.[0]) setSelected(data[0]);
   }, []);
@@ -29,15 +33,21 @@ export default function HomePage() {
     fetchProjects();
   }, [fetchProjects]);
 
-  const summary = useMemo(() => ({
-    total: projects.length,
-    paid: projects.filter((p) => p.payment_status === "paid").length,
-    money: projects.reduce((sum, p) => sum + Number(p.price || 0), 0),
-  }), [projects]);
+  const summary = useMemo(
+    () => ({
+      total: projects.length,
+      paid: projects.filter((p) => p.payment_status === "paid").length,
+      money: projects.reduce((sum, p) => sum + Number(p.price || 0), 0),
+    }),
+    [projects],
+  );
 
   return (
     <div className="min-h-screen bg-[var(--color-surface)] pb-24">
-      <TopBar title="Главная" subtitle="Крути клиентов, звони, редактируй, добавляй" />
+      <TopBar
+        title="Главная"
+        subtitle="Крути клиентов, звони, редактируй, добавляй"
+      />
       <main className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-5 md:px-6 md:py-6">
         <PageSection title="Колесо клиентов" tonal>
           <div className="grid gap-5 lg:grid-cols-[380px_1fr] lg:items-center">
@@ -49,9 +59,13 @@ export default function HomePage() {
                 <MiniStat label="Сумма" value={formatKzt(summary.money)} />
               </div>
               {selected ? (
-                <div className="rounded-[var(--shape-xl)] bg-[color-mix(in_srgb,var(--color-primary-container)_55%,white)] p-5 text-[var(--color-on-primary-container)]">
-                  <p className="md-typescale-headline-small">{selected.client_name}</p>
-                  <p className="mt-1 md-typescale-title-medium">{formatKzt(Number(selected.price || 0))}</p>
+                <Card tonal className="p-5">
+                  <p className="md-typescale-headline-small">
+                    {selected.client_name}
+                  </p>
+                  <p className="mt-1 md-typescale-title-medium">
+                    {formatKzt(Number(selected.price || 0))}
+                  </p>
                   <div className="mt-4">
                     <ContactActions
                       name={selected.client_name}
@@ -61,7 +75,7 @@ export default function HomePage() {
                       note={selected.notes}
                     />
                   </div>
-                </div>
+                </Card>
               ) : null}
             </div>
           </div>
@@ -75,9 +89,9 @@ export default function HomePage() {
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[var(--shape-l)] bg-[color-mix(in_srgb,var(--color-primary-container)_50%,white)] px-4 py-3 text-[var(--color-on-primary-container)]">
+    <Card tonal className="rounded-[var(--shape-l)] px-4 py-3">
       <p className="md-typescale-label-medium">{label}</p>
       <p className="md-typescale-title-medium">{value}</p>
-    </div>
+    </Card>
   );
 }

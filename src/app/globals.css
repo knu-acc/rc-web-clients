@@ -55,7 +55,9 @@
   --color-on-surface-variant: var(--md-sys-color-on-surface-variant);
   --color-surface-container: var(--md-sys-color-surface-container);
   --color-surface-container-high: var(--md-sys-color-surface-container-high);
-  --color-surface-container-highest: var(--md-sys-color-surface-container-highest);
+  --color-surface-container-highest: var(
+    --md-sys-color-surface-container-highest
+  );
   --color-outline: var(--md-sys-color-outline);
   --color-outline-variant: var(--md-sys-color-outline-variant);
   --color-primary: var(--md-sys-color-primary);
@@ -103,6 +105,12 @@
   --m3-duration-medium: 250ms;
   --m3-duration-long: 400ms;
   --m3-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Unified interaction state tokens */
+  --state-hover-opacity: 0.08;
+  --state-focus-opacity: 0.12;
+  --state-pressed-opacity: 0.16;
+  --state-disabled-opacity: 0.38;
 
   /* Project typography — Noto Sans via next/font */
   --md-sys-typescale-body-large-font: "Noto Sans", system-ui, sans-serif;
@@ -193,24 +201,98 @@ md-text-button {
 }
 
 /* M3 Typescale utility classes */
-.md-typescale-display-large { font-size: 57px; line-height: 64px; font-weight: 400; letter-spacing: -0.25px; }
-.md-typescale-display-medium { font-size: 45px; line-height: 52px; font-weight: 400; }
-.md-typescale-display-small { font-size: 36px; line-height: 44px; font-weight: 400; }
-.md-typescale-headline-large { font-size: 32px; line-height: 40px; font-weight: 400; }
-.md-typescale-headline-medium { font-size: 28px; line-height: 36px; font-weight: 400; }
-.md-typescale-headline-small { font-size: 24px; line-height: 32px; font-weight: 400; }
-.md-typescale-title-large { font-size: 22px; line-height: 28px; font-weight: 400; }
-.md-typescale-title-medium { font-size: 16px; line-height: 24px; font-weight: 500; letter-spacing: 0.15px; }
-.md-typescale-title-small { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0.1px; }
-.md-typescale-body-large { font-size: 16px; line-height: 24px; font-weight: 400; letter-spacing: 0.5px; }
-.md-typescale-body-medium { font-size: 14px; line-height: 20px; font-weight: 400; letter-spacing: 0.25px; }
-.md-typescale-body-small { font-size: 12px; line-height: 16px; font-weight: 400; letter-spacing: 0.4px; }
-.md-typescale-label-large { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0.1px; }
-.md-typescale-label-medium { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.5px; }
-.md-typescale-label-small { font-size: 11px; line-height: 16px; font-weight: 500; letter-spacing: 0.5px; }
+.md-typescale-display-large {
+  font-size: 57px;
+  line-height: 64px;
+  font-weight: 400;
+  letter-spacing: -0.25px;
+}
+.md-typescale-display-medium {
+  font-size: 45px;
+  line-height: 52px;
+  font-weight: 400;
+}
+.md-typescale-display-small {
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 400;
+}
+.md-typescale-headline-large {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 400;
+}
+.md-typescale-headline-medium {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 400;
+}
+.md-typescale-headline-small {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 400;
+}
+.md-typescale-title-large {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 400;
+}
+.md-typescale-title-medium {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  letter-spacing: 0.15px;
+}
+.md-typescale-title-small {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+.md-typescale-body-large {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+.md-typescale-body-medium {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+}
+.md-typescale-body-small {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: 0.4px;
+}
+.md-typescale-label-large {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+.md-typescale-label-medium {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.md-typescale-label-small {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
 
 @media (prefers-reduced-motion: no-preference) {
-  a, button, [role="button"], input, select, textarea {
+  a,
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea {
     transition:
       background-color var(--m3-duration-medium) var(--m3-ease),
       color var(--m3-duration-medium) var(--m3-ease),
@@ -225,4 +307,60 @@ md-text-button {
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+.ui-interactive {
+  transition:
+    background-color var(--m3-duration-medium) var(--m3-ease),
+    color var(--m3-duration-medium) var(--m3-ease),
+    border-color var(--m3-duration-medium) var(--m3-ease),
+    box-shadow var(--m3-duration-medium) var(--m3-ease),
+    opacity var(--m3-duration-short) var(--m3-ease),
+    transform var(--m3-duration-short) var(--m3-ease);
+}
+
+.ui-interactive:hover {
+  opacity: calc(1 - var(--state-hover-opacity));
+}
+.ui-interactive:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-primary) 65%, transparent);
+  outline-offset: 2px;
+}
+.ui-interactive:active {
+  opacity: calc(1 - var(--state-pressed-opacity));
+}
+.ui-interactive:disabled,
+.ui-interactive[aria-disabled="true"] {
+  opacity: var(--state-disabled-opacity);
+  pointer-events: none;
+}
+
+.ui-input {
+  transition:
+    border-color var(--m3-duration-medium) var(--m3-ease),
+    box-shadow var(--m3-duration-medium) var(--m3-ease),
+    background-color var(--m3-duration-medium) var(--m3-ease);
+}
+
+.ui-input:hover {
+  border-color: color-mix(
+    in srgb,
+    var(--color-on-surface) 40%,
+    var(--color-outline)
+  );
+}
+.ui-input:focus,
+.ui-input:focus-visible,
+.ui-input:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 3px
+    color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+.ui-input:active {
+  box-shadow: 0 0 0 2px
+    color-mix(in srgb, var(--color-primary) 40%, transparent);
+}
+.ui-input:disabled,
+.ui-input[disabled] {
+  opacity: var(--state-disabled-opacity);
 }

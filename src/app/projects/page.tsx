@@ -12,6 +12,7 @@ import RevenueBlobChart from "@/components/projects/RevenueBlobChart";
 import MetricCard from "@/components/material/MetricCard";
 import PageSection from "@/components/material/PageSection";
 import SearchSortBar from "@/components/ui/SearchSortBar";
+import Card from "@/components/ui/Card";
 
 function getCurrentMonth(): string {
   const now = new Date();
@@ -35,7 +36,10 @@ export default function ProjectsPage() {
 
   const fetchProjects = useCallback(async () => {
     const supabase = createClient();
-    const { data, error } = await supabase.from("projects").select("*").order("created_at", { ascending: false });
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .order("created_at", { ascending: false });
     if (error) {
       console.error(error);
       setProjects([]);
@@ -51,29 +55,47 @@ export default function ProjectsPage() {
 
   const filtered = useMemo(() => {
     const normalized = search.trim().toLowerCase();
-    const base = filter === "all" ? projects : projects.filter((p) => p.work_status === filter);
+    const base =
+      filter === "all"
+        ? projects
+        : projects.filter((p) => p.work_status === filter);
     const searched = normalized
-      ? base.filter((p) => [p.client_name, p.phone, p.telegram, p.website_url].filter(Boolean).some((value) => value!.toLowerCase().includes(normalized)))
+      ? base.filter((p) =>
+          [p.client_name, p.phone, p.telegram, p.website_url]
+            .filter(Boolean)
+            .some((value) => value!.toLowerCase().includes(normalized)),
+        )
       : base;
 
     return [...searched].sort((a, b) => {
       switch (sort) {
         case "created_asc":
-          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+          return (
+            new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+          );
         case "price_desc":
           return Number(b.price) - Number(a.price);
         case "price_asc":
           return Number(a.price) - Number(b.price);
         case "created_desc":
         default:
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          return (
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          );
       }
     });
   }, [projects, filter, search, sort]);
 
-  const monthlyProjects = projects.filter((p) => p.paid_at?.slice(0, 7) === selectedMonth);
-  const monthlyTotal = monthlyProjects.reduce((sum, p) => sum + (Number(p.price) || 0), 0);
-  const paidProjects = projects.filter((p) => p.payment_status === "paid").length;
+  const monthlyProjects = projects.filter(
+    (p) => p.paid_at?.slice(0, 7) === selectedMonth,
+  );
+  const monthlyTotal = monthlyProjects.reduce(
+    (sum, p) => sum + (Number(p.price) || 0),
+    0,
+  );
+  const paidProjects = projects.filter(
+    (p) => p.payment_status === "paid",
+  ).length;
 
   return (
     <div className="min-h-screen bg-[var(--color-surface)] pb-24">
@@ -86,7 +108,12 @@ export default function ProjectsPage() {
         </section>
 
         <PageSection title="Найти">
-          <SearchSortBar search={search} onSearchChange={setSearch} sort={sort} onSortChange={setSort} />
+          <SearchSortBar
+            search={search}
+            onSearchChange={setSearch}
+            sort={sort}
+            onSortChange={setSort}
+          />
           <ProjectFilters value={filter} onChange={setFilter} />
         </PageSection>
 
@@ -94,11 +121,17 @@ export default function ProjectsPage() {
 
         <PageSection title="Список проектов">
           {loading ? (
-            <p className="py-8 text-center md-typescale-body-medium text-[var(--color-on-surface-variant)]">Загрузка…</p>
+            <p className="py-8 text-center md-typescale-body-medium text-[var(--color-on-surface-variant)]">
+              Загрузка…
+            </p>
           ) : filtered.length === 0 ? (
-            <div className="rounded-[var(--shape-xl)] bg-[var(--color-surface-container)] px-5 py-10 text-center">
-              <p className="md-typescale-title-medium text-[var(--color-on-surface)]">{projects.length === 0 ? "Проектов пока нет" : "Ничего не найдено"}</p>
-            </div>
+            <Card className="px-5 py-10 text-center">
+              <p className="md-typescale-title-medium text-[var(--color-on-surface)]">
+                {projects.length === 0
+                  ? "Проектов пока нет"
+                  : "Ничего не найдено"}
+              </p>
+            </Card>
           ) : (
             <ul className="grid gap-4 lg:grid-cols-2">
               {filtered.map((project) => (

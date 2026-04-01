@@ -66,10 +66,15 @@ export default function Select({
         disabled={disabled || undefined}
         error={!!error || undefined}
         error-text={error || undefined}
+        class="ui-input"
         style={{ width: "100%" }}
       >
         {options.map((opt) => (
-          <md-select-option key={opt.value} value={opt.value} selected={opt.value === value || undefined}>
+          <md-select-option
+            key={opt.value}
+            value={opt.value}
+            selected={opt.value === value || undefined}
+          >
             <div slot="headline">{opt.label}</div>
           </md-select-option>
         ))}

@@ -1,6 +1,12 @@
 "use client";
 
-import { type ButtonHTMLAttributes, type ReactNode, useRef, useEffect } from "react";
+import {
+  type ButtonHTMLAttributes,
+  type ReactNode,
+  useRef,
+  useEffect,
+} from "react";
+import { cx } from "./primitives";
 
 type Variant = "filled" | "tonal" | "outlined" | "text" | "elevated";
 
@@ -46,7 +52,7 @@ export default function Button({
       ref={ref}
       type={type}
       disabled={disabled || undefined}
-      class={[fullWidth && "w-full", className].filter(Boolean).join(" ")}
+      class={cx("ui-interactive", fullWidth && "w-full", className)}
       style={fullWidth ? { display: "block", width: "100%" } : undefined}
       {...props}
     >

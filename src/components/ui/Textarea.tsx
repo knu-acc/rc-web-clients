@@ -1,6 +1,7 @@
 "use client";
 
 import { useId } from "react";
+import { cx } from "./primitives";
 
 interface TextareaProps {
   label: string;
@@ -10,6 +11,7 @@ interface TextareaProps {
   hint?: string;
   rows?: number;
   error?: string;
+  disabled?: boolean;
 }
 
 export default function Textarea({
@@ -20,13 +22,17 @@ export default function Textarea({
   hint,
   rows = 5,
   error,
+  disabled,
 }: TextareaProps) {
   const id = useId();
   const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
 
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="block md-typescale-label-large text-[var(--color-on-surface)]">
+      <label
+        htmlFor={id}
+        className="block md-typescale-label-large text-[var(--color-on-surface)]"
+      >
         {label}
       </label>
       <textarea
@@ -34,23 +40,29 @@ export default function Textarea({
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         rows={rows}
+        disabled={disabled}
         placeholder={placeholder}
         aria-describedby={describedBy}
-        className={[
-          "w-full resize-y rounded-[20px] border bg-[var(--color-surface)] px-4 py-3 md-typescale-body-large text-[var(--color-on-surface)]",
-          "placeholder:text-[var(--color-on-surface-variant)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30",
+        className={cx(
+          "ui-input w-full resize-y rounded-[20px] border bg-[var(--color-surface)] px-4 py-3 md-typescale-body-large text-[var(--color-on-surface)]",
           error
             ? "border-[var(--color-error)]"
-            : "border-[var(--color-outline)] hover:border-[var(--color-on-surface)]",
-        ].join(" ")}
+            : "border-[var(--color-outline)]",
+        )}
       />
       {hint && !error ? (
-        <p id={`${id}-hint`} className="md-typescale-body-small text-[var(--color-on-surface-variant)]">
+        <p
+          id={`${id}-hint`}
+          className="md-typescale-body-small text-[var(--color-on-surface-variant)]"
+        >
           {hint}
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className="md-typescale-body-small text-[var(--color-error)]">
+        <p
+          id={`${id}-error`}
+          className="md-typescale-body-small text-[var(--color-error)]"
+        >
           {error}
         </p>
       ) : null}

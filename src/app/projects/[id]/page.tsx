@@ -32,7 +32,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       <TopBar title={project.client_name} />
       <main className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 md:px-6 md:py-6">
         <nav className="flex flex-wrap items-center gap-1 md-typescale-label-large" aria-label="Breadcrumb">
-          <Link href="/projects" className="text-[var(--color-primary)] min-h-[44px] inline-flex items-center">Проекты</Link>
+          <Link href="/projects" className="m3-interactive rounded-full px-2 text-[var(--color-primary)] min-h-[44px] inline-flex items-center focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35">Проекты</Link>
           <span className="text-[var(--color-on-surface-variant)]">/</span>
           <span className="text-[var(--color-on-surface-variant)] min-h-[44px] inline-flex max-w-[240px] items-center truncate">{project.client_name}</span>
         </nav>
@@ -99,10 +99,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
 
 function DetailRow({ label, value, isLink = false }: { label: string; value: string; isLink?: boolean }) {
   return (
-    <div className="rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3">
+    <div className="rounded-[20px] bg-[var(--color-surface-container)] px-4 py-3 transition-[background-color,transform] duration-[var(--motion-duration-hover)] ease-[var(--motion-easing-standard)] hover:bg-[var(--color-surface-container-high)]">
       <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">{label}</p>
       {isLink && value !== "—" ? (
-        <a href={value} target="_blank" rel="noreferrer" className="break-all md-typescale-body-large text-[var(--color-primary)]">
+        <a href={value} target="_blank" rel="noreferrer" className="m3-interactive rounded-[12px] px-1 break-all md-typescale-body-large text-[var(--color-primary)] focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35">
           {value}
         </a>
       ) : (

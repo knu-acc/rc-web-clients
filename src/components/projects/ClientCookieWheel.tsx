@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Project } from "@/lib/types";
 import { hapticLight } from "@/lib/haptics";
+import { usePrefersReducedMotion } from "@/lib/motion";
 
 interface ClientCookieWheelProps {
   projects: Project[];
@@ -22,6 +23,7 @@ const COLORS = [
 export default function ClientCookieWheel({ projects, onSelect }: ClientCookieWheelProps) {
   const items = useMemo(() => projects.slice(0, MAX_SEGMENTS), [projects]);
   const [rotation, setRotation] = useState(0);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const dragRef = useRef<{ angle: number; rotation: number; time: number; sector: number } | null>(null);
   const velocityRef = useRef(0);
@@ -67,6 +69,13 @@ export default function ClientCookieWheel({ projects, onSelect }: ClientCookieWh
 
   const startInertia = () => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (prefersReducedMotion) {
+      const snapped = -sectorFromRotation(rotationRef.current) * step;
+      rotationRef.current = snapped;
+      setRotation(snapped);
+      updateSelection(snapped);
+      return;
+    }
     const tick = () => {
       velocityRef.current *= 0.95;
       if (Math.abs(velocityRef.current) < 0.02) {
@@ -103,6 +112,7 @@ export default function ClientCookieWheel({ projects, onSelect }: ClientCookieWh
 
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!dragRef.current) return;
+    if (prefersReducedMotion) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;

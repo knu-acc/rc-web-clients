@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { hapticLight, hapticSelection } from "@/lib/haptics";
+import { usePrefersReducedMotion } from "@/lib/motion";
 
 const MONTHS = ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен", "Окт", "Ноя", "Дек"];
 
@@ -14,6 +15,7 @@ export default function MonthCookieWheel({ value, onChange }: MonthCookieWheelPr
   const monthIndex = Number(value.slice(5, 7)) - 1;
   const year = Number(value.slice(0, 4));
   const [rotation, setRotation] = useState(-monthIndex * 30);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const startRef = useRef<{ angle: number; rotation: number; month: number } | null>(null);
 
   useEffect(() => {
@@ -60,12 +62,14 @@ export default function MonthCookieWheel({ value, onChange }: MonthCookieWheelPr
     const cy = rect.top + rect.height / 2;
     const angle = Math.atan2(event.clientY - cy, event.clientX - cx) * (180 / Math.PI);
     const delta = angle - startRef.current.angle;
+    if (prefersReducedMotion) return;
     setRotation(startRef.current.rotation + delta);
   };
 
   const onPointerUp = () => {
     if (!startRef.current) return;
-    updateFromRotation(rotation, true);
+    const nextRotation = prefersReducedMotion ? -monthIndex * 30 : rotation;
+    updateFromRotation(nextRotation, true);
     startRef.current = null;
   };
 

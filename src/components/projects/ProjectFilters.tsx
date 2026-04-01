@@ -3,6 +3,7 @@
 import { WORK_STATUS_OPTIONS } from "@/lib/constants";
 import type { WorkStatus } from "@/lib/types";
 import { hapticLight } from "@/lib/haptics";
+import { useStateLayerRipple } from "@/lib/motion";
 
 interface ProjectFiltersProps {
   value: WorkStatus | "all";
@@ -11,6 +12,7 @@ interface ProjectFiltersProps {
 
 export default function ProjectFilters({ value, onChange }: ProjectFiltersProps) {
   const allOptions = [{ value: "all" as const, label: "Все" }, ...WORK_STATUS_OPTIONS];
+  const onRipple = useStateLayerRipple();
 
   return (
     <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-2 scrollbar-hide" role="group" aria-label="Фильтр по статусу">
@@ -25,11 +27,12 @@ export default function ProjectFilters({ value, onChange }: ProjectFiltersProps)
               onChange(opt.value as WorkStatus | "all");
             }}
             className={[
-              "shrink-0 rounded-full px-4 py-2 md-typescale-label-large transition-colors",
+              "m3-interactive shrink-0 rounded-full px-4 py-2 md-typescale-label-large focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35",
               active
                 ? "bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)]"
                 : "bg-[var(--color-surface-container-high)] text-[var(--color-on-surface-variant)] hover:bg-[var(--color-surface-container-highest)]",
             ].join(" ")}
+            onPointerDown={onRipple}
           >
             {opt.label}
           </button>

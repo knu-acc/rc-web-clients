@@ -1,6 +1,7 @@
 "use client";
 
 import { hapticLight } from "@/lib/haptics";
+import { useStateLayerRipple } from "@/lib/motion";
 
 type SortValue = "created_desc" | "created_asc" | "price_desc" | "price_asc";
 
@@ -21,6 +22,8 @@ const sortLabels: Record<SortValue, string> = {
 const order: SortValue[] = ["created_desc", "created_asc", "price_desc", "price_asc"];
 
 export default function SearchSortBar({ search, onSearchChange, sort, onSortChange }: SearchSortBarProps) {
+  const onRipple = useStateLayerRipple();
+
   return (
     <div className="flex items-center gap-2 rounded-[var(--shape-xl)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container)] px-3 py-2">
       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)]">
@@ -44,7 +47,7 @@ export default function SearchSortBar({ search, onSearchChange, sort, onSortChan
           hapticLight();
           onSortChange(next);
         }}
-        className="inline-flex min-h-10 items-center gap-2 rounded-full bg-[var(--color-tertiary-container)] px-3 text-[var(--color-on-tertiary-container)]"
+        className="m3-interactive inline-flex min-h-10 items-center gap-2 rounded-full bg-[var(--color-tertiary-container)] px-3 text-[var(--color-on-tertiary-container)] focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35" onPointerDown={onRipple}
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6h18M6 12h12m-9 6h6" />

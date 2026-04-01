@@ -22,9 +22,9 @@ export default async function EditProjectPage({ params }: PageProps) {
       <TopBar title="Редактирование" subtitle={`Проект: ${project.client_name}`} />
       <main className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 md:px-6 md:py-6">
         <nav className="flex flex-wrap items-center gap-1 md-typescale-label-large" aria-label="Breadcrumb">
-          <Link href="/projects" className="text-[var(--color-primary)] min-h-[44px] inline-flex items-center">Проекты</Link>
+          <Link href="/projects" className="m3-interactive rounded-full px-2 text-[var(--color-primary)] min-h-[44px] inline-flex items-center focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35">Проекты</Link>
           <span className="text-[var(--color-on-surface-variant)]">/</span>
-          <Link href={`/projects/${id}`} className="text-[var(--color-primary)] min-h-[44px] inline-flex max-w-[220px] items-center truncate">
+          <Link href={`/projects/${id}`} className="m3-interactive rounded-full px-2 text-[var(--color-primary)] min-h-[44px] inline-flex max-w-[220px] items-center truncate focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35">
             {project.client_name}
           </Link>
           <span className="text-[var(--color-on-surface-variant)]">/</span>

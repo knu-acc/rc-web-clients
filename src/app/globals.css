@@ -104,6 +104,16 @@
   --m3-duration-long: 400ms;
   --m3-ease: cubic-bezier(0.2, 0, 0, 1);
 
+  /* Standardized motion tokens for interactive surfaces */
+  --motion-duration-hover: var(--m3-duration-medium);
+  --motion-duration-press: var(--m3-duration-short);
+  --motion-duration-focus: var(--m3-duration-short);
+  --motion-duration-ripple: var(--m3-duration-long);
+  --motion-easing-standard: var(--m3-ease);
+  --motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --motion-delay-none: 0ms;
+  --motion-delay-short: 40ms;
+
   /* Project typography — Noto Sans via next/font */
   --md-sys-typescale-body-large-font: "Noto Sans", system-ui, sans-serif;
   --md-sys-typescale-body-medium-font: "Noto Sans", system-ui, sans-serif;
@@ -208,6 +218,92 @@ md-text-button {
 .md-typescale-label-large { font-size: 14px; line-height: 20px; font-weight: 500; letter-spacing: 0.1px; }
 .md-typescale-label-medium { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.5px; }
 .md-typescale-label-small { font-size: 11px; line-height: 16px; font-weight: 500; letter-spacing: 0.5px; }
+
+.m3-interactive {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  outline: none;
+  transition:
+    transform var(--motion-duration-press) var(--motion-easing-standard) var(--motion-delay-none),
+    box-shadow var(--motion-duration-hover) var(--motion-easing-standard) var(--motion-delay-none),
+    background-color var(--motion-duration-hover) var(--motion-easing-standard) var(--motion-delay-none),
+    color var(--motion-duration-hover) var(--motion-easing-standard) var(--motion-delay-none),
+    border-color var(--motion-duration-hover) var(--motion-easing-standard) var(--motion-delay-none),
+    opacity var(--motion-duration-focus) var(--motion-easing-standard) var(--motion-delay-none);
+}
+
+.m3-interactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-duration-hover) var(--motion-easing-standard) var(--motion-delay-none);
+  z-index: 0;
+}
+
+.m3-interactive > * {
+  position: relative;
+  z-index: 1;
+}
+
+.m3-interactive:hover::before {
+  opacity: 0.08;
+}
+
+.m3-interactive:focus-visible::before {
+  opacity: 0.12;
+}
+
+.m3-interactive:active::before,
+.m3-interactive[data-pressed="true"]::before {
+  opacity: 0.12;
+}
+
+.m3-interactive:active {
+  transform: scale(0.98);
+}
+
+.m3-ripple {
+  position: absolute;
+  left: var(--ripple-x, 50%);
+  top: var(--ripple-y, 50%);
+  width: var(--ripple-size, 24px);
+  height: var(--ripple-size, 24px);
+  border-radius: 9999px;
+  background: currentColor;
+  opacity: 0.22;
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  z-index: 0;
+  animation: m3-ripple-enter var(--motion-duration-ripple) var(--motion-easing-emphasized) forwards;
+}
+
+@keyframes m3-ripple-enter {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-hover: 0ms;
+    --motion-duration-press: 0ms;
+    --motion-duration-focus: 0ms;
+    --motion-duration-ripple: 0ms;
+    --motion-delay-short: 0ms;
+  }
+
+  *, *::before, *::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 @media (prefers-reduced-motion: no-preference) {
   a, button, [role="button"], input, select, textarea {

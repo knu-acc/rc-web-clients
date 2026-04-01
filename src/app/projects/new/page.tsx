@@ -8,7 +8,7 @@ export default function NewProjectPage() {
       <TopBar title="Новый проект" subtitle="Заполняй только важное: остальное можно дополнить позже" />
       <main className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 md:px-6 md:py-6">
         <nav className="flex flex-wrap items-center gap-1 md-typescale-label-large" aria-label="Breadcrumb">
-          <Link href="/projects" className="text-[var(--color-primary)] min-h-[44px] inline-flex items-center">
+          <Link href="/projects" className="m3-interactive rounded-full px-2 text-[var(--color-primary)] min-h-[44px] inline-flex items-center focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35">
             Проекты
           </Link>
           <span className="text-[var(--color-on-surface-variant)]">/</span>

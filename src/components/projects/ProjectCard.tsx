@@ -16,7 +16,7 @@ function formatPrice(n: number): string {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <article className="rounded-[var(--shape-xl)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+    <article className="rounded-[var(--shape-xl)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-[box-shadow,transform,border-color] duration-[var(--motion-duration-hover)] ease-[var(--motion-easing-standard)] hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 space-y-1.5">
           <h2 className="truncate md-typescale-title-large text-[var(--color-on-surface)]">{project.client_name}</h2>

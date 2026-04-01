@@ -2,6 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useStateLayerRipple } from "@/lib/motion";
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -11,6 +12,7 @@ export default function ThemeToggle() {
 
   const isDark = resolvedTheme === "dark";
   const toggle = () => setTheme(isDark ? "light" : "dark");
+  const onRipple = useStateLayerRipple();
 
   if (!mounted) {
     return (
@@ -22,7 +24,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="w-12 h-12 min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center text-[var(--color-on-surface-variant)] hover:bg-[var(--color-surface-container-highest)] active:scale-95 transition-colors"
+      className="m3-interactive w-12 h-12 min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center text-[var(--color-on-surface-variant)] hover:bg-[var(--color-surface-container-highest)] focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35" onPointerDown={onRipple}
       aria-label={isDark ? "Включить светлую тему" : "Включить тёмную тему"}
     >
       {isDark ? (

@@ -1,7 +1,8 @@
 "use client";
 
-import { useId, useState, useRef, type InputHTMLAttributes } from "react";
+import { useId, useState, useRef, type DragEvent, type InputHTMLAttributes } from "react";
 import { CONTRACT_ALLOWED_TYPES } from "@/lib/constants";
+import { useStateLayerRipple } from "@/lib/motion";
 
 interface FileUploadProps {
   label?: string;
@@ -32,6 +33,7 @@ export default function FileUpload({
   const inputRef = useRef<HTMLInputElement>(null);
   const [drag, setDrag] = useState(false);
   const maxBytes = maxSizeMb * 1024 * 1024;
+  const onRipple = useStateLayerRipple();
 
   const handleFile = (file: File | null) => {
     if (!file) {
@@ -52,14 +54,14 @@ export default function FileUpload({
     e.target.value = "";
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     setDrag(false);
     const f = e.dataTransfer.files?.[0];
     handleFile(f ?? null);
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
     setDrag(true);
   };
@@ -97,8 +99,9 @@ export default function FileUpload({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onClick={!displayName ? openPicker : undefined}
+        onPointerDown={onRipple}
         className={[
-          "min-h-[120px] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 p-4 cursor-pointer transition-colors",
+          "m3-interactive min-h-[120px] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 p-4 cursor-pointer focus-visible:ring-2 focus-visible:ring-[var(--color-primary)]/35",
           drag
             ? "border-[var(--color-primary)] bg-[var(--color-primary-container)]"
             : "border-[var(--color-outline)] bg-[var(--color-surface-container)] hover:border-[var(--color-outline-variant)]",
@@ -116,15 +119,23 @@ export default function FileUpload({
             <div className="flex gap-2">
               <button
                 type="button"
-                onClick={(e) => { e.stopPropagation(); openPicker(); }}
-                className="text-sm text-[var(--color-primary)] font-medium min-h-[44px] px-3"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openPicker();
+                }}
+                onPointerDown={onRipple}
+                className="m3-interactive rounded-full text-sm text-[var(--color-primary)] font-medium min-h-[44px] px-3"
               >
                 Заменить
               </button>
               <button
                 type="button"
-                onClick={(e) => { e.stopPropagation(); clear(); }}
-                className="text-sm text-[var(--color-error)] font-medium min-h-[44px] px-3"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  clear();
+                }}
+                onPointerDown={onRipple}
+                className="m3-interactive rounded-full text-sm text-[var(--color-error)] font-medium min-h-[44px] px-3"
               >
                 Удалить
               </button>

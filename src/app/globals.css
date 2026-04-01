@@ -170,6 +170,36 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Fallback layout/typography while Material web components are still upgrading. */
+md-filled-button:not(:defined),
+md-outlined-button:not(:defined),
+md-filled-tonal-button:not(:defined),
+md-text-button:not(:defined) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding-inline: 20px;
+  border-radius: 9999px;
+  font-family: var(--font-sans), "Noto Sans", system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  box-sizing: border-box;
+}
+
+md-outlined-text-field:not(:defined),
+md-filled-text-field:not(:defined),
+md-outlined-select:not(:defined) {
+  display: inline-block;
+  min-height: 56px;
+  min-width: 160px;
+  font-family: var(--font-sans), "Noto Sans", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 md-filled-button,
 md-outlined-button,
 md-filled-tonal-button,

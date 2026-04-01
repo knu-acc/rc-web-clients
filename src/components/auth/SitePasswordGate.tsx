@@ -43,13 +43,13 @@ export default function SitePasswordGate({ children }: { children: React.ReactNo
 
   if (!mounted || !unlocked) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[var(--color-surface)]">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-[var(--sys-color-role-surface)]">
         <div className="w-full max-w-xs space-y-6">
           <div>
-            <h1 className="md-typescale-headline-small text-[var(--color-on-surface)]">
+            <h1 className="md-typescale-headline-small text-[var(--sys-color-role-on-surface)]">
               Доступ к приложению
             </h1>
-            <p className="md-typescale-body-medium text-[var(--color-on-surface-variant)] mt-1">
+            <p className="md-typescale-body-medium text-[var(--sys-color-role-on-surface-variant)] mt-1">
               Введите код доступа
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function SitePasswordGate({ children }: { children: React.ReactNo
               style={{ width: "100%" }}
             />
             {error && (
-              <p className="md-typescale-body-small text-[var(--color-error)]">{error}</p>
+              <p className="md-typescale-body-small text-[var(--sys-color-role-error)]">{error}</p>
             )}
             <md-filled-button type="submit" style={{ width: "100%" }}>
               Войти

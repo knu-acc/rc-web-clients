@@ -36,7 +36,7 @@ export default function HomePage() {
   }), [projects]);
 
   return (
-    <div className="min-h-screen bg-[var(--color-surface)] pb-24">
+    <div className="min-h-screen bg-[var(--sys-color-role-surface)] pb-24">
       <TopBar title="Главная" subtitle="Крути клиентов, звони, редактируй, добавляй" />
       <main className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-5 md:px-6 md:py-6">
         <PageSection title="Колесо клиентов" tonal>
@@ -49,7 +49,7 @@ export default function HomePage() {
                 <MiniStat label="Сумма" value={formatKzt(summary.money)} />
               </div>
               {selected ? (
-                <div className="rounded-[var(--shape-xl)] bg-[color-mix(in_srgb,var(--color-primary-container)_55%,white)] p-5 text-[var(--color-on-primary-container)]">
+                <div className="rounded-[var(--sys-shape-xl)] bg-[var(--sys-color-role-primary-container)] p-5 text-[var(--sys-color-role-on-primary-container)]">
                   <p className="md-typescale-headline-small">{selected.client_name}</p>
                   <p className="mt-1 md-typescale-title-medium">{formatKzt(Number(selected.price || 0))}</p>
                   <div className="mt-4">
@@ -75,7 +75,7 @@ export default function HomePage() {
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[var(--shape-l)] bg-[color-mix(in_srgb,var(--color-primary-container)_50%,white)] px-4 py-3 text-[var(--color-on-primary-container)]">
+    <div className="rounded-[var(--sys-shape-l)] bg-[var(--sys-color-role-primary-container)] px-4 py-3 text-[var(--sys-color-role-on-primary-container)]">
       <p className="md-typescale-label-medium">{label}</p>
       <p className="md-typescale-title-medium">{value}</p>
     </div>

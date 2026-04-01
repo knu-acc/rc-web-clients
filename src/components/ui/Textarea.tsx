@@ -26,7 +26,7 @@ export default function Textarea({
 
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="block md-typescale-label-large text-[var(--color-on-surface)]">
+      <label htmlFor={id} className="block md-typescale-label-large text-[var(--sys-input-fg)]">
         {label}
       </label>
       <textarea
@@ -37,20 +37,20 @@ export default function Textarea({
         placeholder={placeholder}
         aria-describedby={describedBy}
         className={[
-          "w-full resize-y rounded-[20px] border bg-[var(--color-surface)] px-4 py-3 md-typescale-body-large text-[var(--color-on-surface)]",
-          "placeholder:text-[var(--color-on-surface-variant)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/30",
+          "w-full resize-y rounded-[var(--sys-input-radius)] border bg-[var(--sys-input-bg)] px-4 py-3 md-typescale-body-large text-[var(--sys-input-fg)]",
+          "placeholder:text-[var(--sys-input-placeholder)] focus:outline-none focus:ring-2 focus:ring-[var(--sys-input-focus-ring)]",
           error
-            ? "border-[var(--color-error)]"
-            : "border-[var(--color-outline)] hover:border-[var(--color-on-surface)]",
+            ? "border-[var(--sys-input-border-error)]"
+            : "border-[var(--sys-input-border)] hover:border-[var(--sys-input-border-hover)]",
         ].join(" ")}
       />
       {hint && !error ? (
-        <p id={`${id}-hint`} className="md-typescale-body-small text-[var(--color-on-surface-variant)]">
+        <p id={`${id}-hint`} className="md-typescale-body-small text-[var(--sys-color-role-on-surface-variant)]">
           {hint}
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} className="md-typescale-body-small text-[var(--color-error)]">
+        <p id={`${id}-error`} className="md-typescale-body-small text-[var(--sys-color-role-error)]">
           {error}
         </p>
       ) : null}

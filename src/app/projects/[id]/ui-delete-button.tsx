@@ -31,7 +31,7 @@ export default function DeleteProjectButton({ projectId, projectName }: DeletePr
     <button
       type="button"
       onClick={onDelete}
-      className="min-h-[40px] px-4 rounded-[20px] border border-[var(--color-error)] text-[var(--color-error)] inline-flex items-center md-typescale-label-large"
+      className="min-h-[40px] px-4 rounded-[var(--sys-shape-4)] border border-[var(--sys-color-role-error)] text-[var(--sys-color-role-error)] inline-flex items-center md-typescale-label-large"
     >
       Удалить
     </button>

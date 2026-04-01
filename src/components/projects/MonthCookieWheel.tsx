@@ -78,18 +78,18 @@ export default function MonthCookieWheel({ value, onChange }: MonthCookieWheelPr
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
       >
-        <svg viewBox="0 0 300 300" className="h-full w-full drop-shadow-[0_18px_40px_rgba(103,80,164,0.24)]">
+        <svg viewBox="0 0 300 300" className="h-full w-full drop-shadow-[var(--sys-elevation-4)]">
           <g transform={`rotate(${rotation} 150 150)`}>
             <polygon
               points={polygonPoints(150, 150, 132, 12)}
-              fill="var(--color-primary-container)"
-              stroke="color-mix(in srgb, var(--color-primary) 32%, transparent)"
+              fill="var(--sys-color-role-primary-container)"
+              stroke="var(--sys-color-role-primary)" strokeOpacity={0.32}
               strokeWidth="2"
             />
             <polygon
               points={polygonPoints(150, 150, 112, 12)}
-              fill="var(--color-surface-container-low)"
-              stroke="color-mix(in srgb, var(--color-primary) 18%, transparent)"
+              fill="var(--sys-color-role-surface-container-low)"
+              stroke="var(--sys-color-role-primary)" strokeOpacity={0.18}
               strokeWidth="1.5"
             />
             {segments.map((segment) => (
@@ -99,7 +99,7 @@ export default function MonthCookieWheel({ value, onChange }: MonthCookieWheelPr
                   y={segment.y}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  fill={segment.index === monthIndex ? "var(--color-primary)" : "var(--color-on-surface-variant)"}
+                  fill={segment.index === monthIndex ? "var(--sys-color-role-primary)" : "var(--sys-color-role-on-surface-variant)"}
                   fontSize="13"
                   fontWeight={segment.index === monthIndex ? "700" : "500"}
                 >
@@ -108,18 +108,18 @@ export default function MonthCookieWheel({ value, onChange }: MonthCookieWheelPr
               </g>
             ))}
           </g>
-          <circle cx="150" cy="150" r="54" fill="var(--color-primary)" />
-          <circle cx="150" cy="150" r="44" fill="var(--color-primary-container)" />
-          <text x="150" y="142" textAnchor="middle" fill="var(--color-on-primary-container)" fontSize="14" fontWeight="600">
+          <circle cx="150" cy="150" r="54" fill="var(--sys-color-role-primary)" />
+          <circle cx="150" cy="150" r="44" fill="var(--sys-color-role-primary-container)" />
+          <text x="150" y="142" textAnchor="middle" fill="var(--sys-color-role-on-primary-container)" fontSize="14" fontWeight="600">
             {MONTHS[monthIndex]}
           </text>
-          <text x="150" y="160" textAnchor="middle" fill="var(--color-on-primary-container)" fontSize="12">
+          <text x="150" y="160" textAnchor="middle" fill="var(--sys-color-role-on-primary-container)" fontSize="12">
             {year}
           </text>
-          <path d="M150 20 L158 36 L142 36 Z" fill="var(--color-tertiary)" />
+          <path d="M150 20 L158 36 L142 36 Z" fill="var(--sys-color-role-tertiary)" />
         </svg>
       </div>
-      <p className="md-typescale-body-small text-[var(--color-on-surface-variant)]">Поверни колесо</p>
+      <p className="md-typescale-body-small text-[var(--sys-color-role-on-surface-variant)]">Поверни колесо</p>
     </div>
   );
 }

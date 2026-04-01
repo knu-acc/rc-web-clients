@@ -11,9 +11,9 @@ interface ClientCookieWheelProps {
 
 const MAX_SEGMENTS = 12;
 const COLORS = [
-  "var(--color-primary-container)",
-  "var(--color-secondary-container)",
-  "var(--color-tertiary-container)",
+  "var(--sys-color-role-primary-container)",
+  "var(--sys-color-role-secondary-container)",
+  "var(--sys-color-role-tertiary-container)",
   "#d7e3ff",
   "#c9e6c0",
   "#ffd8c2",
@@ -48,7 +48,7 @@ export default function ClientCookieWheel({ projects, onSelect }: ClientCookieWh
 
   if (!items.length) {
     return (
-      <div className="flex h-[344px] items-center justify-center rounded-[var(--shape-xl)] bg-[var(--color-surface-container)] text-center md-typescale-body-medium text-[var(--color-on-surface-variant)]">
+      <div className="flex h-[344px] items-center justify-center rounded-[var(--sys-shape-xl)] bg-[var(--sys-color-role-surface-container)] text-center md-typescale-body-medium text-[var(--sys-color-role-on-surface-variant)]">
         Нет проектов для колеса.
       </div>
     );
@@ -134,10 +134,10 @@ export default function ClientCookieWheel({ projects, onSelect }: ClientCookieWh
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="relative h-[344px] w-[344px] touch-none select-none" onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
-        <svg viewBox="0 0 344 344" className="h-full w-full drop-shadow-[0_18px_40px_rgba(103,80,164,0.18)]">
+        <svg viewBox="0 0 344 344" className="h-full w-full drop-shadow-[var(--sys-elevation-3)]">
           <g transform={`rotate(${rotation} 172 172)`}>
-            <path d={roundedPolygonPath(172, 172, 146, items.length, 18)} fill="var(--color-primary-container)" />
-            <path d={roundedPolygonPath(172, 172, 124, items.length, 16)} fill="var(--color-surface-container-low)" />
+            <path d={roundedPolygonPath(172, 172, 146, items.length, 18)} fill="var(--sys-color-role-primary-container)" />
+            <path d={roundedPolygonPath(172, 172, 124, items.length, 16)} fill="var(--sys-color-role-surface-container-low)" />
             {items.map((project, index) => {
               const angle = ((360 / items.length) * index - 90) * (Math.PI / 180);
               const x = 172 + Math.cos(angle) * 108;
@@ -145,28 +145,28 @@ export default function ClientCookieWheel({ projects, onSelect }: ClientCookieWh
               return (
                 <g key={project.id}>
                   <circle cx={x} cy={y} r={28} fill={COLORS[index % COLORS.length]} opacity={index === selectedIndex ? 1 : 0.82} />
-                  <text x={x} y={y - 3} textAnchor="middle" fill="var(--color-on-surface)" fontSize="10" fontWeight="700">
+                  <text x={x} y={y - 3} textAnchor="middle" fill="var(--sys-color-role-on-surface)" fontSize="10" fontWeight="700">
                     {fit(project.client_name, 10)}
                   </text>
-                  <text x={x} y={y + 11} textAnchor="middle" fill="var(--color-on-surface-variant)" fontSize="9">
+                  <text x={x} y={y + 11} textAnchor="middle" fill="var(--sys-color-role-on-surface-variant)" fontSize="9">
                     {shortPrice(project.price)}
                   </text>
                 </g>
               );
             })}
           </g>
-          <circle cx="172" cy="172" r="66" fill="var(--color-primary)" />
-          <circle cx="172" cy="172" r="56" fill="var(--color-primary-container)" />
-          <text x="172" y="162" textAnchor="middle" fill="var(--color-on-primary-container)" fontSize="14" fontWeight="700">
+          <circle cx="172" cy="172" r="66" fill="var(--sys-color-role-primary)" />
+          <circle cx="172" cy="172" r="56" fill="var(--sys-color-role-primary-container)" />
+          <text x="172" y="162" textAnchor="middle" fill="var(--sys-color-role-on-primary-container)" fontSize="14" fontWeight="700">
             {fit(active.client_name, 16)}
           </text>
-          <text x="172" y="180" textAnchor="middle" fill="var(--color-on-primary-container)" fontSize="12">
+          <text x="172" y="180" textAnchor="middle" fill="var(--sys-color-role-on-primary-container)" fontSize="12">
             {shortPrice(active.price)}
           </text>
-          <path d="M172 18 L180 34 L164 34 Z" fill="var(--color-tertiary)" />
+          <path d="M172 18 L180 34 L164 34 Z" fill="var(--sys-color-role-tertiary)" />
         </svg>
       </div>
-      <p className="md-typescale-body-small text-[var(--color-on-surface-variant)]">Крути по секторам</p>
+      <p className="md-typescale-body-small text-[var(--sys-color-role-on-surface-variant)]">Крути по секторам</p>
     </div>
   );
 }

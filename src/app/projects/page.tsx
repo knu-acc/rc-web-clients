@@ -76,7 +76,7 @@ export default function ProjectsPage() {
   const paidProjects = projects.filter((p) => p.payment_status === "paid").length;
 
   return (
-    <div className="min-h-screen bg-[var(--color-surface)] pb-24">
+    <div className="min-h-screen bg-[var(--sys-color-role-surface)] pb-24">
       <TopBar title="Проекты" />
       <main className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-5 md:px-6 md:py-6">
         <section className="grid gap-4 md:grid-cols-3">
@@ -94,10 +94,10 @@ export default function ProjectsPage() {
 
         <PageSection title="Список проектов">
           {loading ? (
-            <p className="py-8 text-center md-typescale-body-medium text-[var(--color-on-surface-variant)]">Загрузка…</p>
+            <p className="py-8 text-center md-typescale-body-medium text-[var(--sys-color-role-on-surface-variant)]">Загрузка…</p>
           ) : filtered.length === 0 ? (
-            <div className="rounded-[var(--shape-xl)] bg-[var(--color-surface-container)] px-5 py-10 text-center">
-              <p className="md-typescale-title-medium text-[var(--color-on-surface)]">{projects.length === 0 ? "Проектов пока нет" : "Ничего не найдено"}</p>
+            <div className="rounded-[var(--sys-shape-xl)] bg-[var(--sys-color-role-surface-container)] px-5 py-10 text-center">
+              <p className="md-typescale-title-medium text-[var(--sys-color-role-on-surface)]">{projects.length === 0 ? "Проектов пока нет" : "Ничего не найдено"}</p>
             </div>
           ) : (
             <ul className="grid gap-4 lg:grid-cols-2">

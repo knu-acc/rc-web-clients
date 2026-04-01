@@ -78,7 +78,7 @@ export default function FileUpload({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-[var(--color-on-surface)] mb-1">
+        <label className="block text-sm font-medium text-[var(--sys-color-role-on-surface)] mb-1">
           {label}
         </label>
       )}
@@ -98,11 +98,11 @@ export default function FileUpload({
         onDragLeave={handleDragLeave}
         onClick={!displayName ? openPicker : undefined}
         className={[
-          "min-h-[120px] rounded-2xl border-2 border-dashed flex flex-col items-center justify-center gap-2 p-4 cursor-pointer transition-colors",
+          "min-h-[120px] rounded-[var(--sys-shape-5)] border-2 border-dashed flex flex-col items-center justify-center gap-2 p-4 cursor-pointer transition-colors",
           drag
-            ? "border-[var(--color-primary)] bg-[var(--color-primary-container)]"
-            : "border-[var(--color-outline)] bg-[var(--color-surface-container)] hover:border-[var(--color-outline-variant)]",
-          error && "border-[var(--color-error)]",
+            ? "border-[var(--sys-color-role-primary)] bg-[var(--sys-color-role-primary-container)]"
+            : "border-[var(--sys-color-role-outline)] bg-[var(--sys-color-role-surface-container)] hover:border-[var(--sys-color-role-outline-variant)]",
+          error && "border-[var(--sys-color-role-error)]",
           disabled && "opacity-50 cursor-not-allowed",
         ]
           .filter(Boolean)
@@ -110,21 +110,21 @@ export default function FileUpload({
       >
         {displayName ? (
           <>
-            <span className="text-sm text-[var(--color-on-surface)] truncate max-w-full">
+            <span className="text-sm text-[var(--sys-color-role-on-surface)] truncate max-w-full">
               {displayName}
             </span>
             <div className="flex gap-2">
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); openPicker(); }}
-                className="text-sm text-[var(--color-primary)] font-medium min-h-[44px] px-3"
+                className="text-sm text-[var(--sys-color-role-primary)] font-medium min-h-[44px] px-3"
               >
                 Заменить
               </button>
               <button
                 type="button"
                 onClick={(e) => { e.stopPropagation(); clear(); }}
-                className="text-sm text-[var(--color-error)] font-medium min-h-[44px] px-3"
+                className="text-sm text-[var(--sys-color-role-error)] font-medium min-h-[44px] px-3"
               >
                 Удалить
               </button>
@@ -132,17 +132,17 @@ export default function FileUpload({
           </>
         ) : (
           <>
-            <span className="text-sm text-[var(--color-on-surface-variant)]">
+            <span className="text-sm text-[var(--sys-color-role-on-surface-variant)]">
               Перетащите файл сюда или нажмите
             </span>
-            <span className="text-xs text-[var(--color-on-surface-variant)]">
+            <span className="text-xs text-[var(--sys-color-role-on-surface-variant)]">
               PDF, JPG, PNG до {maxSizeMb} МБ
             </span>
           </>
         )}
       </div>
       {error && (
-        <p id={`${id}-error`} className="mt-1 text-sm text-[var(--color-error)]">
+        <p id={`${id}-error`} className="mt-1 text-sm text-[var(--sys-color-role-error)]">
           {error}
         </p>
       )}

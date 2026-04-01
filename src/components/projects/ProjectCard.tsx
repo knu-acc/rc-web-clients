@@ -16,26 +16,26 @@ function formatPrice(n: number): string {
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
-    <article className="rounded-[var(--shape-xl)] border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+    <article className="rounded-[var(--sys-shape-xl)] border border-[var(--sys-color-role-outline-variant)] bg-[var(--sys-color-role-surface-container-low)] p-5 shadow-[var(--sys-elevation-1)]">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 space-y-1.5">
-          <h2 className="truncate md-typescale-title-large text-[var(--color-on-surface)]">{project.client_name}</h2>
+          <h2 className="truncate md-typescale-title-large text-[var(--sys-color-role-on-surface)]">{project.client_name}</h2>
           <div className="flex flex-wrap gap-2">
             <StatusBadge value={project.work_status} kind="work" />
             <StatusBadge value={project.payment_status} kind="payment" />
           </div>
         </div>
-        <p className="shrink-0 text-right md-typescale-title-large text-[var(--color-primary)]">{formatPrice(project.price)}</p>
+        <p className="shrink-0 text-right md-typescale-title-large text-[var(--sys-color-role-primary)]">{formatPrice(project.price)}</p>
       </div>
 
       <div className="mt-4 grid gap-2 md:grid-cols-2">
-        <div className="rounded-[var(--shape-l)] bg-[var(--color-surface-container)] px-4 py-3">
-          <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">Телефон</p>
-          <p className="md-typescale-body-large text-[var(--color-on-surface)]">{project.phone || "Не указан"}</p>
+        <div className="rounded-[var(--sys-shape-l)] bg-[var(--sys-color-role-surface-container)] px-4 py-3">
+          <p className="md-typescale-label-medium text-[var(--sys-color-role-on-surface-variant)]">Телефон</p>
+          <p className="md-typescale-body-large text-[var(--sys-color-role-on-surface)]">{project.phone || "Не указан"}</p>
         </div>
-        <div className="rounded-[var(--shape-l)] bg-[var(--color-surface-container)] px-4 py-3">
-          <p className="md-typescale-label-medium text-[var(--color-on-surface-variant)]">Telegram</p>
-          <p className="md-typescale-body-large text-[var(--color-on-surface)]">{project.telegram || "Не указан"}</p>
+        <div className="rounded-[var(--sys-shape-l)] bg-[var(--sys-color-role-surface-container)] px-4 py-3">
+          <p className="md-typescale-label-medium text-[var(--sys-color-role-on-surface-variant)]">Telegram</p>
+          <p className="md-typescale-body-large text-[var(--sys-color-role-on-surface)]">{project.telegram || "Не указан"}</p>
         </div>
       </div>
 

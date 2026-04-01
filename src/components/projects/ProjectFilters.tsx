@@ -25,10 +25,10 @@ export default function ProjectFilters({ value, onChange }: ProjectFiltersProps)
               onChange(opt.value as WorkStatus | "all");
             }}
             className={[
-              "shrink-0 rounded-full px-4 py-2 md-typescale-label-large transition-colors",
+              "shrink-0 rounded-[var(--sys-shape-full)] px-4 py-2 md-typescale-label-large transition-colors",
               active
-                ? "bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)]"
-                : "bg-[var(--color-surface-container-high)] text-[var(--color-on-surface-variant)] hover:bg-[var(--color-surface-container-highest)]",
+                ? "bg-[var(--sys-color-role-secondary-container)] text-[var(--sys-color-role-on-secondary-container)]"
+                : "bg-[var(--sys-color-role-surface-container-high)] text-[var(--sys-color-role-on-surface-variant)] hover:bg-[var(--sys-color-role-surface-container-highest)]",
             ].join(" ")}
           >
             {opt.label}

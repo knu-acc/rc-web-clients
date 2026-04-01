@@ -33,14 +33,14 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(103,80,164,0.16),transparent_28%),var(--color-surface)] px-4 py-10 md:px-6">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_right,rgba(103,80,164,0.16),transparent_28%),var(--sys-color-role-surface)] px-4 py-10 md:px-6">
       <div className="mx-auto max-w-xl">
         <PageSection
           title="Вход в CRM"
           description="Материал 3-стиль: спокойная поверхность, чистая иерархия и только нужные поля."
           tonal
         >
-          <form onSubmit={handleSubmit} className="space-y-4 text-[var(--color-on-surface)]">
+          <form onSubmit={handleSubmit} className="space-y-4 text-[var(--sys-color-role-on-surface)]">
             <Input
               label="Email"
               type="email"
@@ -57,7 +57,7 @@ export default function LoginForm() {
               required
               autoComplete="current-password"
             />
-            {error ? <p className="md-typescale-body-small text-[var(--color-error)]">{error}</p> : null}
+            {error ? <p className="md-typescale-body-small text-[var(--sys-color-role-error)]">{error}</p> : null}
             <div className="flex flex-wrap gap-3">
               <Button type="submit" disabled={loading}>
                 {loading ? "Вход…" : "Войти"}

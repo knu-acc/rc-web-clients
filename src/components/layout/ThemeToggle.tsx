@@ -14,7 +14,7 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-12 h-12 rounded-full bg-[var(--color-surface-container-high)]" aria-hidden />
+      <div className="w-12 h-12 rounded-[var(--sys-shape-full)] bg-[var(--sys-color-role-surface-container-high)]" aria-hidden />
     );
   }
 
@@ -22,7 +22,7 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="w-12 h-12 min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center text-[var(--color-on-surface-variant)] hover:bg-[var(--color-surface-container-highest)] active:scale-95 transition-colors"
+      className="w-12 h-12 min-w-[48px] min-h-[48px] rounded-[var(--sys-shape-full)] flex items-center justify-center text-[var(--sys-color-role-on-surface-variant)] hover:bg-[var(--sys-color-role-surface-container-highest)] active:scale-95 transition-colors"
       aria-label={isDark ? "Включить светлую тему" : "Включить тёмную тему"}
     >
       {isDark ? (

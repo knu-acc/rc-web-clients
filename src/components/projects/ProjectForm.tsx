@@ -144,9 +144,9 @@ export default function ProjectForm({ project }: ProjectFormProps) {
         <Textarea label="Заметки" value={notes} onChange={setNotes} placeholder="Нюансы по проекту" />
       </PageSection>
 
-      {error ? <p className="md-typescale-body-medium text-[var(--color-error)]">{error}</p> : null}
+      {error ? <p className="md-typescale-body-medium text-[var(--sys-color-role-error)]">{error}</p> : null}
 
-      <div className="sticky bottom-0 z-20 -mx-4 border-t border-[var(--color-outline-variant)] bg-[color-mix(in_srgb,var(--color-surface)_94%,transparent)] px-4 py-3 backdrop-blur-xl md:-mx-6 md:px-6">
+      <div className="sticky bottom-0 z-20 -mx-4 border-t border-[var(--sys-color-role-outline-variant)] bg-[var(--sys-surface-backdrop-strong)] px-4 py-3 backdrop-blur-xl md:-mx-6 md:px-6">
         <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:flex-row sm:justify-end">
           <Button type="button" variant="text" onClick={() => router.back()}>Назад</Button>
           <Button type="submit" disabled={loading}>{loading ? "Сохранение…" : project ? "Сохранить" : "Создать"}</Button>

@@ -1,36 +1,23 @@
 @import "tailwindcss";
 
-/*
-  Material Design 3 / @material/web theme tokens.
-  Color tokens follow the M3 naming convention used by md-* components.
-  Light and dark themes are provided via :root and .dark.
-*/
 :root {
-  /* M3 primary */
+  /* color roles */
   --md-sys-color-primary: #6750a4;
   --md-sys-color-on-primary: #ffffff;
   --md-sys-color-primary-container: #eaddff;
   --md-sys-color-on-primary-container: #21005d;
-
-  /* M3 secondary */
   --md-sys-color-secondary: #625b71;
   --md-sys-color-on-secondary: #ffffff;
   --md-sys-color-secondary-container: #e8def8;
   --md-sys-color-on-secondary-container: #1d192b;
-
-  /* M3 tertiary */
   --md-sys-color-tertiary: #7d5260;
   --md-sys-color-on-tertiary: #ffffff;
   --md-sys-color-tertiary-container: #ffd8e4;
   --md-sys-color-on-tertiary-container: #31111d;
-
-  /* M3 error */
   --md-sys-color-error: #b3261e;
   --md-sys-color-on-error: #ffffff;
   --md-sys-color-error-container: #f9dedc;
   --md-sys-color-on-error-container: #410e0b;
-
-  /* M3 surface */
   --md-sys-color-surface: #fffbfe;
   --md-sys-color-on-surface: #1c1b1f;
   --md-sys-color-on-surface-variant: #49454f;
@@ -41,77 +28,116 @@
   --md-sys-color-surface-container-highest: #e6e0e9;
   --md-sys-color-inverse-surface: #313033;
   --md-sys-color-inverse-on-surface: #f4eff4;
-
-  /* M3 outline */
   --md-sys-color-outline: #79747e;
   --md-sys-color-outline-variant: #cac4d0;
-
-  /* M3 surface-tint (used for elevation tint) */
   --md-sys-color-surface-tint: #6750a4;
 
-  /* Aliases for existing Tailwind classes */
-  --color-surface: var(--md-sys-color-surface);
-  --color-on-surface: var(--md-sys-color-on-surface);
-  --color-on-surface-variant: var(--md-sys-color-on-surface-variant);
-  --color-surface-container: var(--md-sys-color-surface-container);
-  --color-surface-container-high: var(--md-sys-color-surface-container-high);
-  --color-surface-container-highest: var(--md-sys-color-surface-container-highest);
-  --color-outline: var(--md-sys-color-outline);
-  --color-outline-variant: var(--md-sys-color-outline-variant);
-  --color-primary: var(--md-sys-color-primary);
-  --color-on-primary: var(--md-sys-color-on-primary);
-  --color-primary-container: var(--md-sys-color-primary-container);
-  --color-on-primary-container: var(--md-sys-color-on-primary-container);
-  --color-secondary: var(--md-sys-color-secondary);
-  --color-on-secondary: var(--md-sys-color-on-secondary);
-  --color-secondary-container: var(--md-sys-color-secondary-container);
-  --color-on-secondary-container: var(--md-sys-color-on-secondary-container);
-  --color-tertiary: var(--md-sys-color-tertiary);
-  --color-on-tertiary: var(--md-sys-color-on-tertiary);
-  --color-tertiary-container: var(--md-sys-color-tertiary-container);
-  --color-on-tertiary-container: var(--md-sys-color-on-tertiary-container);
-  --color-error: var(--md-sys-color-error);
-  --color-on-error: var(--md-sys-color-on-error);
+  --sys-color-role-primary: var(--md-sys-color-primary);
+  --sys-color-role-on-primary: var(--md-sys-color-on-primary);
+  --sys-color-role-primary-container: var(--md-sys-color-primary-container);
+  --sys-color-role-on-primary-container: var(--md-sys-color-on-primary-container);
+  --sys-color-role-secondary: var(--md-sys-color-secondary);
+  --sys-color-role-on-secondary: var(--md-sys-color-on-secondary);
+  --sys-color-role-secondary-container: var(--md-sys-color-secondary-container);
+  --sys-color-role-on-secondary-container: var(--md-sys-color-on-secondary-container);
+  --sys-color-role-tertiary: var(--md-sys-color-tertiary);
+  --sys-color-role-on-tertiary: var(--md-sys-color-on-tertiary);
+  --sys-color-role-tertiary-container: var(--md-sys-color-tertiary-container);
+  --sys-color-role-on-tertiary-container: var(--md-sys-color-on-tertiary-container);
+  --sys-color-role-error: var(--md-sys-color-error);
+  --sys-color-role-on-error: var(--md-sys-color-on-error);
+  --sys-color-role-error-container: var(--md-sys-color-error-container);
+  --sys-color-role-on-error-container: var(--md-sys-color-on-error-container);
+  --sys-color-role-surface: var(--md-sys-color-surface);
+  --sys-color-role-on-surface: var(--md-sys-color-on-surface);
+  --sys-color-role-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --sys-color-role-surface-container-lowest: var(--md-sys-color-surface-container-lowest);
+  --sys-color-role-surface-container-low: var(--md-sys-color-surface-container-low);
+  --sys-color-role-surface-container: var(--md-sys-color-surface-container);
+  --sys-color-role-surface-container-high: var(--md-sys-color-surface-container-high);
+  --sys-color-role-surface-container-highest: var(--md-sys-color-surface-container-highest);
+  --sys-color-role-outline: var(--md-sys-color-outline);
+  --sys-color-role-outline-variant: var(--md-sys-color-outline-variant);
 
-  --background: var(--md-sys-color-surface);
-  --foreground: var(--md-sys-color-on-surface);
+  /* elevation 0-5 */
+  --sys-elevation-0: none;
+  --sys-elevation-1: 0 1px 2px rgb(0 0 0 / 0.08);
+  --sys-elevation-2: 0 2px 6px rgb(0 0 0 / 0.12);
+  --sys-elevation-3: 0 6px 14px rgb(0 0 0 / 0.14);
+  --sys-elevation-4: 0 10px 24px rgb(0 0 0 / 0.18);
+  --sys-elevation-5: 0 16px 36px rgb(0 0 0 / 0.22);
 
-  /* M3 shape */
-  --md-sys-shape-corner-none: 0;
-  --md-sys-shape-corner-extra-small: 4px;
-  --md-sys-shape-corner-small: 8px;
-  --md-sys-shape-corner-medium: 12px;
-  --md-sys-shape-corner-large: 16px;
-  --md-sys-shape-corner-extra-large: 28px;
-  --md-sys-shape-corner-full: 9999px;
+  /* shape scale */
+  --sys-shape-0: 0;
+  --sys-shape-1: 4px;
+  --sys-shape-2: 8px;
+  --sys-shape-3: 12px;
+  --sys-shape-4: 16px;
+  --sys-shape-5: 28px;
+  --sys-shape-full: 9999px;
+  --sys-shape-xs: var(--sys-shape-1);
+  --sys-shape-s: var(--sys-shape-2);
+  --sys-shape-m: var(--sys-shape-3);
+  --sys-shape-l: var(--sys-shape-4);
+  --sys-shape-xl: var(--sys-shape-5);
 
-  --shape-xs: var(--md-sys-shape-corner-extra-small);
-  --shape-s: var(--md-sys-shape-corner-small);
-  --shape-m: var(--md-sys-shape-corner-medium);
-  --shape-l: var(--md-sys-shape-corner-large);
-  --shape-xl: var(--md-sys-shape-corner-extra-large);
-  --shape-full: var(--md-sys-shape-corner-full);
+  /* spacing scale */
+  --sys-space-0: 0;
+  --sys-space-1: 4px;
+  --sys-space-2: 8px;
+  --sys-space-3: 12px;
+  --sys-space-4: 16px;
+  --sys-space-5: 20px;
+  --sys-space-6: 24px;
+  --sys-space-7: 32px;
+  --sys-space-8: 40px;
 
-  /* M3 motion */
-  --md-sys-motion-duration-short1: 50ms;
-  --md-sys-motion-duration-short2: 100ms;
-  --md-sys-motion-duration-medium1: 250ms;
-  --md-sys-motion-duration-medium2: 400ms;
-  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  /* state opacities */
+  --sys-state-hover-opacity: 0.08;
+  --sys-state-focus-opacity: 0.12;
+  --sys-state-pressed-opacity: 0.12;
+  --sys-state-dragged-opacity: 0.16;
+  --sys-state-disabled-opacity: 0.38;
 
-  --m3-duration-short: 100ms;
-  --m3-duration-medium: 250ms;
-  --m3-duration-long: 400ms;
-  --m3-ease: cubic-bezier(0.2, 0, 0, 1);
+  /* motion */
+  --sys-motion-duration-short: 100ms;
+  --sys-motion-duration-medium: 250ms;
+  --sys-motion-duration-long: 400ms;
+  --sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
 
-  /* Project typography — Noto Sans via next/font */
+  /* UI aliases */
+  --sys-button-radius: var(--sys-shape-full);
+  --sys-button-bg: var(--sys-color-role-primary-container);
+  --sys-button-fg: var(--sys-color-role-on-primary-container);
+  --sys-button-border: var(--sys-color-role-outline-variant);
+  --sys-button-shadow: var(--sys-elevation-1);
+
+  --sys-input-radius: var(--sys-shape-4);
+  --sys-input-bg: var(--sys-color-role-surface);
+  --sys-input-fg: var(--sys-color-role-on-surface);
+  --sys-input-placeholder: var(--sys-color-role-on-surface-variant);
+  --sys-input-border: var(--sys-color-role-outline);
+  --sys-input-border-hover: var(--sys-color-role-on-surface);
+  --sys-input-border-error: var(--sys-color-role-error);
+  --sys-input-focus-ring: rgb(103 80 164 / 0.3);
+
+  --sys-surface-app: var(--sys-color-role-surface);
+  --sys-surface-container: var(--sys-color-role-surface-container);
+  --sys-surface-container-low: var(--sys-color-role-surface-container-low);
+  --sys-surface-container-high: var(--sys-color-role-surface-container-high);
+  --sys-surface-backdrop: rgb(255 251 254 / 0.92);
+  --sys-surface-backdrop-strong: rgb(255 251 254 / 0.94);
+
+  /* codestyle: new visual values should be defined as tokens here first. */
+  --background: var(--sys-color-role-surface);
+  --foreground: var(--sys-color-role-on-surface);
+
   --md-sys-typescale-body-large-font: "Noto Sans", system-ui, sans-serif;
   --md-sys-typescale-body-medium-font: "Noto Sans", system-ui, sans-serif;
   --md-sys-typescale-label-large-font: "Noto Sans", system-ui, sans-serif;
   --md-sys-typescale-title-large-font: "Noto Sans", system-ui, sans-serif;
   --md-sys-typescale-headline-small-font: "Noto Sans", system-ui, sans-serif;
-
-  /* Component typeface */
   --md-ref-typeface-plain: "Noto Sans", system-ui, sans-serif;
   --md-ref-typeface-brand: "Noto Sans", system-ui, sans-serif;
 }
@@ -121,22 +147,18 @@
   --md-sys-color-on-primary: #381e72;
   --md-sys-color-primary-container: #4f378b;
   --md-sys-color-on-primary-container: #eaddff;
-
   --md-sys-color-secondary: #ccc2dc;
   --md-sys-color-on-secondary: #332d41;
   --md-sys-color-secondary-container: #4a4458;
   --md-sys-color-on-secondary-container: #e8def8;
-
   --md-sys-color-tertiary: #efb8c8;
   --md-sys-color-on-tertiary: #492532;
   --md-sys-color-tertiary-container: #633b48;
   --md-sys-color-on-tertiary-container: #ffd8e4;
-
   --md-sys-color-error: #f2b8b5;
   --md-sys-color-on-error: #601410;
   --md-sys-color-error-container: #8c1d18;
   --md-sys-color-on-error-container: #f9dedc;
-
   --md-sys-color-surface: #1c1b1f;
   --md-sys-color-on-surface: #e6e1e5;
   --md-sys-color-on-surface-variant: #cac4d0;
@@ -145,15 +167,10 @@
   --md-sys-color-surface-container: #2b2930;
   --md-sys-color-surface-container-high: #36343b;
   --md-sys-color-surface-container-highest: #413c42;
-  --md-sys-color-inverse-surface: #e6e1e5;
-  --md-sys-color-inverse-on-surface: #313033;
-
   --md-sys-color-outline: #938f99;
   --md-sys-color-outline-variant: #49454f;
-  --md-sys-color-surface-tint: #d0bcff;
-
-  --background: var(--md-sys-color-surface);
-  --foreground: var(--md-sys-color-on-surface);
+  --sys-surface-backdrop: rgb(28 27 31 / 0.92);
+  --sys-surface-backdrop-strong: rgb(28 27 31 / 0.94);
 }
 
 @theme inline {
@@ -164,8 +181,8 @@
 }
 
 body {
-  background: var(--color-surface);
-  color: var(--color-on-surface);
+  background: var(--sys-surface-app);
+  color: var(--sys-color-role-on-surface);
   font-family: var(--font-sans), "Noto Sans", system-ui, sans-serif;
   -webkit-tap-highlight-color: transparent;
 }
@@ -174,25 +191,16 @@ md-filled-button,
 md-outlined-button,
 md-filled-tonal-button,
 md-text-button {
-  --md-filled-button-container-shape: 9999px;
-  --md-outlined-button-container-shape: 9999px;
-  --md-filled-tonal-button-container-shape: 9999px;
-  --md-text-button-container-shape: 9999px;
+  --md-filled-button-container-shape: var(--sys-button-radius);
+  --md-outlined-button-container-shape: var(--sys-button-radius);
+  --md-filled-tonal-button-container-shape: var(--sys-button-radius);
+  --md-text-button-container-shape: var(--sys-button-radius);
   --md-filled-button-container-height: 44px;
   --md-outlined-button-container-height: 44px;
   --md-filled-tonal-button-container-height: 44px;
   --md-text-button-container-height: 44px;
-  --md-filled-button-leading-space: 20px;
-  --md-filled-button-trailing-space: 20px;
-  --md-outlined-button-leading-space: 20px;
-  --md-outlined-button-trailing-space: 20px;
-  --md-filled-tonal-button-leading-space: 20px;
-  --md-filled-tonal-button-trailing-space: 20px;
-  --md-text-button-leading-space: 18px;
-  --md-text-button-trailing-space: 18px;
 }
 
-/* M3 Typescale utility classes */
 .md-typescale-display-large { font-size: 57px; line-height: 64px; font-weight: 400; letter-spacing: -0.25px; }
 .md-typescale-display-medium { font-size: 45px; line-height: 52px; font-weight: 400; }
 .md-typescale-display-small { font-size: 36px; line-height: 44px; font-weight: 400; }
@@ -212,17 +220,12 @@ md-text-button {
 @media (prefers-reduced-motion: no-preference) {
   a, button, [role="button"], input, select, textarea {
     transition:
-      background-color var(--m3-duration-medium) var(--m3-ease),
-      color var(--m3-duration-medium) var(--m3-ease),
-      border-color var(--m3-duration-medium) var(--m3-ease),
-      opacity var(--m3-duration-short) var(--m3-ease);
+      background-color var(--sys-motion-duration-medium) var(--sys-motion-easing-standard),
+      color var(--sys-motion-duration-medium) var(--sys-motion-easing-standard),
+      border-color var(--sys-motion-duration-medium) var(--sys-motion-easing-standard),
+      opacity var(--sys-motion-duration-short) var(--sys-motion-easing-standard);
   }
 }
 
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }

@@ -18,10 +18,10 @@ export default function PageSection({
   return (
     <section
       className={[
-        "rounded-[var(--shape-xl)] border p-5 md:p-6 space-y-4",
+        "rounded-[var(--sys-shape-xl)] border p-5 md:p-6 space-y-4",
         tonal
-          ? "border-transparent bg-[var(--color-primary-container)] text-[var(--color-on-primary-container)]"
-          : "border-[var(--color-outline-variant)] bg-[var(--color-surface-container-low)] text-[var(--color-on-surface)]",
+          ? "border-transparent bg-[var(--sys-color-role-primary-container)] text-[var(--sys-color-role-on-primary-container)]"
+          : "border-[var(--sys-color-role-outline-variant)] bg-[var(--sys-color-role-surface-container-low)] text-[var(--sys-color-role-on-surface)]",
         className,
       ].join(" ")}
     >
@@ -32,8 +32,8 @@ export default function PageSection({
             className={[
               "md-typescale-body-medium",
               tonal
-                ? "text-[color-mix(in_srgb,var(--color-on-primary-container)_78%,transparent)]"
-                : "text-[var(--color-on-surface-variant)]",
+                ? "text-[var(--sys-color-role-on-primary-container)]/80"
+                : "text-[var(--sys-color-role-on-surface-variant)]",
             ].join(" ")}
           >
             {description}

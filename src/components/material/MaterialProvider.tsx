@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 let registered = false;
+let registrationPromise: Promise<void> | null = null;
 
 async function registerMaterialComponents() {
   if (registered) return;
-  registered = true;
+  if (registrationPromise) return registrationPromise;
 
-  await Promise.all([
+  registrationPromise = Promise.all([
     import("@material/web/button/filled-button.js"),
     import("@material/web/button/outlined-button.js"),
     import("@material/web/button/text-button.js"),
@@ -24,14 +25,23 @@ async function registerMaterialComponents() {
     import("@material/web/chips/filter-chip.js"),
     import("@material/web/chips/chip-set.js"),
     import("@material/web/progress/circular-progress.js"),
-  ]);
+  ])
+    .then(async () => {
+      const { styles: typescaleStyles } = await import(
+        "@material/web/typography/md-typescale-styles.js"
+      );
+      if (typescaleStyles.styleSheet && !document.adoptedStyleSheets.includes(typescaleStyles.styleSheet)) {
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+      }
 
-  const { styles: typescaleStyles } = await import(
-    "@material/web/typography/md-typescale-styles.js"
-  );
-  if (typescaleStyles.styleSheet) {
-    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
-  }
+      registered = true;
+    })
+    .catch((error) => {
+      registrationPromise = null;
+      throw error;
+    });
+
+  return registrationPromise;
 }
 
 export default function MaterialProvider({
@@ -39,12 +49,11 @@ export default function MaterialProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [ready, setReady] = useState(registered);
-
   useEffect(() => {
-    registerMaterialComponents().then(() => setReady(true));
+    registerMaterialComponents().catch(() => {
+      // Keep rendering with fallback styles if registration fails.
+    });
   }, []);
 
-  if (!ready) return null;
   return <>{children}</>;
 }
